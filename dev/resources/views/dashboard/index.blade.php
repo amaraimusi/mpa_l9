@@ -30,10 +30,6 @@
 
 <div id="app"><!-- vue.jsの場所・未使用 --></div>
 
-<div class="d-flex flex-row m-1 m-sm-4 px-sm-5 px-1">
-@include('layouts.side')
-<main class="flex-fill mx-sm-2 px-sm-5 mx-1 px-1 w-100">
-
 	<div id="org_div" style="margin-top:20px;margin-bottom:60px;">
 		<div class="row" style="margin-top:20px;">
 		
@@ -79,10 +75,6 @@
 		</div><!--  row -->
 		
 	</div>
-
-</main>
-</div><!-- d-flex -->
-
 
 </div><!-- container-fluid -->
 

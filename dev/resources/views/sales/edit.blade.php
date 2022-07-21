@@ -27,10 +27,6 @@ $ver_str = '?v=' . $this_page_version;
 
 <div id="app"><!-- vue.jsの場所・未使用 --></div>
 
-<div class="d-flex flex-row m-1 m-sm-4 px-sm-5 px-1">
-@include('layouts.side')
-<main class="flex-fill mx-sm-2 px-sm-5 mx-1 px-1 w-100">
-
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="{{ url('/') }}">ホーム</a></li>
@@ -151,9 +147,6 @@ $ver_str = '?v=' . $this_page_version;
 		
 	</div>
 </div>
-
-</main>
-</div><!-- d-flex -->
 
 </div><!-- container-fluid -->
 
