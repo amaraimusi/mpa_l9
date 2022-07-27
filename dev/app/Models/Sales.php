@@ -226,6 +226,10 @@ class Sales extends BaseX
 	 */
 	public function saveEntity(&$ent){
 	    
+	    foreach($ent as $field => $value){
+	        if($ent[$field] === '') $ent[$field] = null;
+	    }
+	    
 	    if(empty($ent['id'])){
 	        
 	        // ▽ idが空であればINSERTをする。

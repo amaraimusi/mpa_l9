@@ -47,6 +47,8 @@ class SalesController extends BaseXController{
 			
 			$searches = [
 				'main_search' => $request->main_search, // メイン検索
+				
+				// CBBXS-3000
 			    'id' => $request->id, /// ID
 				'client_name' => $request->client_name, // 顧客名
 				'status' => $request->status, // ステータス
@@ -59,6 +61,8 @@ class SalesController extends BaseXController{
 				'note' => $request->note, // 備考
 				'delete_flg' => $request->delete_flg, // 無効フラグ
 				'update_user' => $request->update_user, // 更新者
+				// CBBXE
+				
 				'sort' => $request->sort, // 並びフィールド
 				'desc' => $request->desc, // 並び向き
 				'per_page' => $request->per_page, // 行制限数

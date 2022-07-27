@@ -45,8 +45,9 @@ class BaseXController extends Controller{
 			$userInfo['user_name'] = $userInfo['name'];
 			$userInfo['update_user'] = $userInfo['name'];
 			$userInfo['email'] = \Auth::user()->email; // メールアドレス
-			$userInfo['role'] = \Auth::user()->role; // メールアドレス
-			$userInfo['nickname'] = \Auth::user()->nickname; // メールアドレス
+			$userInfo['role'] = \Auth::user()->role; // 権限
+			$userInfo['nickname'] = \Auth::user()->nickname ?? $userInfo['name']; // ニックネーム
+			
 		}
 		
 		$userInfo['ip_addr'] = $_SERVER["REMOTE_ADDR"];// IPアドレス

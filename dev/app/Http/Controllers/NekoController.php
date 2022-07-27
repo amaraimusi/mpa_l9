@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Client;
+use App\Models\Neko;
 
 
-class ClientController extends BaseXController{
+class NekoController extends BaseXController{
 	
 	// 画面のバージョン → 開発者はこの画面を修正したらバージョンを変更すること。バージョンを変更するとキャッシュやセッションのクリアが自動的に行われます。
-	public $this_page_version = '1.0.1';
+	public $this_page_version = '1.0.0';
 	
 	/**
 	 * indexページのアクション
@@ -29,7 +29,7 @@ class ClientController extends BaseXController{
 			'per_page' => 'nullable|numeric',
 		]);
 		
-		$sesSearches = session('client_searches_key');// セッションからセッション検索データを受け取る
+		$sesSearches = session('neko_searches_key');// セッションからセッション検索データを受け取る
 
 		// セッション検索データの画面から旧画面バージョンを受け取る
 		$new_version = $this->judgeNewVersion($sesSearches, $this->this_page_version);
@@ -42,13 +42,22 @@ class ClientController extends BaseXController{
 			    'main_search' => $request->main_search, // メイン検索
 			    
 			    // CBBXS-3000
-			    'id' => $request->id, // ID
-			    'client_name' => $request->client_name, // 顧客名
-			    'tell' => $request->tell, // 電話番号
-			    'address' => $request->address, // 住所
+				'id' => $request->id, // id
+				'neko_val' => $request->neko_val, // neko_val
+				'neko_name' => $request->neko_name, // neko_name
+				'neko_date' => $request->neko_date, // neko_date
+				'neko_type' => $request->neko_type, // 猫種別
+				'neko_dt' => $request->neko_dt, // neko_dt
+				'neko_flg' => $request->neko_flg, // ネコフラグ
+				'img_fn' => $request->img_fn, // 画像ファイル名
 				'note' => $request->note, // 備考
+				'sort_no' => $request->sort_no, // 順番
 				'delete_flg' => $request->delete_flg, // 無効フラグ
-			    'update_user' => $request->update_user, // 更新者
+				'update_user_id' => $request->update_user_id, // 更新者
+				'ip_addr' => $request->ip_addr, // IPアドレス
+				'created' => $request->created, // 生成日時
+				'modified' => $request->modified, // 更新日
+
 			    // CBBXE
 			    
 				'sort' => $request->sort, // 並びフィールド
@@ -63,14 +72,14 @@ class ClientController extends BaseXController{
 
 		$searches['this_page_version'] = $this->this_page_version; // 画面バージョン
 		$searches['new_version'] = $new_version; // 新バージョンフラグ
-		session(['client_searches_key' => $searches]); // セッションに検索データを書き込む
+		session(['neko_searches_key' => $searches]); // セッションに検索データを書き込む
 
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
-		$model = new Client();
+		$model = new Neko();
 		$data = $model->getData($searches);
 
-	   return view('client.index', [
+	   return view('neko.index', [
 			'data'=>$data,
 			'searches'=>$searches,
 			'userInfo'=>$userInfo,
@@ -93,7 +102,7 @@ class ClientController extends BaseXController{
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
-		return view('client.create', [
+		return view('neko.create', [
 			'userInfo'=>$userInfo,
 			'this_page_version'=>$this->this_page_version,
 			
@@ -113,29 +122,28 @@ class ClientController extends BaseXController{
 	    if(\Auth::id() == null) die;
 
 	    $request->validate([
-	        // CBBXS-30011
-	        'client_name' => 'nullable|max:200',
+	        'neko_name' => 'nullable|max:200',
 	        'tell' => 'nullable|max:20',
 	        'address' => 'nullable|max:200',
 	        'note' => 'nullable|max:2000',
-	        // CBBXE
+			
 		]);
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
-		$client = new Client();
-		$client->client_name = $request->client_name;
-		$client->tell = $request->tell;
-		$client->address = $request->address;
-		$client->note = $request->note;
-		$client->sort_no = $client->nextSortNo();
-		$client->delete_flg = 0;
-		$client->update_user_id = $userInfo['id'];
-		$client->ip_addr = $userInfo['ip_addr'];
+		$neko = new Neko();
+		$neko->neko_name = $request->neko_name;
+		$neko->tell = $request->tell;
+		$neko->address = $request->address;
+		$neko->note = $request->note;
+		$neko->sort_no = $neko->nextSortNo();
+		$neko->delete_flg = 0;
+		$neko->update_user_id = $userInfo['id'];
+		$neko->ip_addr = $userInfo['ip_addr'];
 
-		$client->save();
+		$neko->save();
 		
-		return redirect('/client');
+		return redirect('/neko');
 		
 	}
 	
@@ -151,7 +159,7 @@ class ClientController extends BaseXController{
 	    // ログアウトになっていたらログイン画面にリダイレクト
 	    if(\Auth::id() == null) return redirect('login');
 	    
-	    $model = new Client();
+	    $model = new Neko();
 	    $userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 	    
 	    $id = $request->id;
@@ -160,9 +168,9 @@ class ClientController extends BaseXController{
 	        die;
 	    }
 	    
-	    $ent = Client::find($id);
+	    $ent = Neko::find($id);
 
-	    return view('client.show', [
+	    return view('neko.show', [
 	        'ent'=>$ent,
 	        'userInfo'=>$userInfo,
 	        'this_page_version'=>$this->this_page_version,
@@ -183,7 +191,7 @@ class ClientController extends BaseXController{
 	    // ログアウトになっていたらログイン画面にリダイレクト
 	    if(\Auth::id() == null) return redirect('login');
 
-		$model = new Client();
+		$model = new Neko();
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
 		$id = $request->id;
@@ -192,9 +200,9 @@ class ClientController extends BaseXController{
 			die;
 		}
 	
-		$ent = Client::find($id);
+		$ent = Neko::find($id);
 		
-		return view('client.edit', [
+		return view('neko.edit', [
 			'ent'=>$ent,
 		    'userInfo'=>$userInfo,
 		    'this_page_version'=>$this->this_page_version,
@@ -217,28 +225,28 @@ class ClientController extends BaseXController{
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 
 		$request->validate([
-		    'client_name' => 'nullable|max:200',
+		    'neko_name' => 'nullable|max:200',
 		    'tell' => 'nullable|max:20',
 		    'address' => 'nullable|max:200',
 		    'note' => 'nullable|max:2000',
 		    
 		]);
 		
-		$client = Client::find($request->id);
+		$neko = Neko::find($request->id);
 
-		$client->id = $request->id;
-		$client->client_name = $request->client_name;
-		$client->tell = $request->tell;
-		$client->address = $request->address;
-		$client->note = $request->note;
-		$client->sort_no = $client->nextSortNo();
-		$client->delete_flg = 0;
-		$client->update_user_id = $userInfo['id'];
-		$client->ip_addr = $userInfo['ip_addr'];
+		$neko->id = $request->id;
+		$neko->neko_name = $request->neko_name;
+		$neko->tell = $request->tell;
+		$neko->address = $request->address;
+		$neko->note = $request->note;
+		$neko->sort_no = $neko->nextSortNo();
+		$neko->delete_flg = 0;
+		$neko->update_user_id = $userInfo['id'];
+		$neko->ip_addr = $userInfo['ip_addr'];
 		
- 		$client->update();
+ 		$neko->update();
 		
-		return redirect('/client');
+		return redirect('/neko');
 		
 	}
 	
@@ -259,18 +267,18 @@ class ClientController extends BaseXController{
 	    $id = $param['id'];
 	    $action_flg =  $param['action_flg'];
 
-	    $client = Client::find($id);
+	    $neko = Neko::find($id);
 	    
 	    if(empty($action_flg)){
-	        $client->delete_flg = 0; // 削除フラグをOFFにする
+	        $neko->delete_flg = 0; // 削除フラグをOFFにする
 	    }else{
-	        $client->delete_flg = 1; // 削除フラグをONにする
+	        $neko->delete_flg = 1; // 削除フラグをONにする
 	    }
 	    
-	    $client->update_user_id = $userInfo['id'];
-	    $client->ip_addr = $userInfo['ip_addr'];
+	    $neko->update_user_id = $userInfo['id'];
+	    $neko->ip_addr = $userInfo['ip_addr'];
 	    
-	    $client->update();
+	    $neko->update();
 	    
 	    $res = ['success'];
 	    $json_str = json_encode($res);//JSONに変換
@@ -294,8 +302,8 @@ class ClientController extends BaseXController{
 	    $param = json_decode($json,true);//JSON文字を配列に戻す
 	    $id = $param['id'];
 	    
-	    $client = new Client();
-	    $client->destroy($id);// idを指定して抹消（データベースかDELETE）
+	    $neko = new Neko();
+	    $neko->destroy($id);// idを指定して抹消（データベースかDELETE）
 	    
 	    $res = ['success'];
 	    $json_str = json_encode($res);//JSONに変換
@@ -320,8 +328,8 @@ class ClientController extends BaseXController{
 		
 		$data = json_decode($json,true);//JSON文字を配列に戻す
 		
-		$client = new Client();
-		$client->saveAll($data);
+		$neko = new Neko();
+		$neko->saveAll($data);
 
 		$res = ['success'];
 		$json_str = json_encode($res);//JSONに変換
@@ -340,15 +348,15 @@ class ClientController extends BaseXController{
 	    // ログアウトになっていたらログイン画面にリダイレクト
 	    if(\Auth::id() == null) return redirect('login');
 
-		$searches = session('client_searches_key');// セッションからセッション検索データを受け取る
+		$searches = session('neko_searches_key');// セッションからセッション検索データを受け取る
 
-		$model = new Client();
+		$model = new Neko();
 		$data = $model->getData($searches, 'csv');
 		
 		// データ件数が0件ならCSVダウンロードを中断し、一覧画面にリダイレクトする。
 		$count = count($data);
 		if($count == 0){
-		    return redirect('/client');
+		    return redirect('/neko');
 		}
 		
 		// ダブルクォートで値を囲む
@@ -372,7 +380,7 @@ class ClientController extends BaseXController{
 		//CSVファイル名を作成
 		$date = new \DateTime();
 		$strDate=$date->format("Y-m-d");
-		$fn='client'.$strDate.'.csv';
+		$fn='neko'.$strDate.'.csv';
 		
 		//CSVダウンロード
 		$this->csvOutput($fn, $data);
