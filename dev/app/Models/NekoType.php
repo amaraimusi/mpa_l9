@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\BaseX;
 
-class Neko extends BaseX
+class NekoType extends BaseX
 {
-	protected $table = 'nekos'; // 紐づけるテーブル名
+	protected $table = 'neko_types'; // 紐づけるテーブル名
 	
 	const CREATED_AT = 'created_at';
 	const UPDATED_AT = 'updated_at';
@@ -23,14 +23,7 @@ class Neko extends BaseX
 	protected $fillable = [
 		// CBBXS-3009
 		'id',
-		'neko_val',
-		'neko_name',
-		'neko_date',
-		'neko_type',
-		'neko_dt',
-		'neko_flg',
-		'img_fn',
-		'note',
+		'neko_type_name',
 		'sort_no',
 		'delete_flg',
 		'update_user_id',
@@ -56,33 +49,26 @@ class Neko extends BaseX
 	public function getData($searches, $use_type='index'){
 		
 		// 一覧データを取得するSQLの組立。
-		$query = DB::table('nekos')->
-			leftJoin('users', 'nekos.update_user_id', '=', 'users.id');
+		$query = DB::table('neko_types')->
+			leftJoin('users', 'neko_types.update_user_id', '=', 'users.id');
 		
 		$query = $query->select(
 		    // CBBXS-3034
-			'nekos.id as id',
-			'nekos.neko_val as neko_val',
-			'nekos.neko_name as neko_name',
-			'nekos.neko_date as neko_date',
-			'nekos.neko_type as neko_type',
-			'nekos.neko_dt as neko_dt',
-			'nekos.neko_flg as neko_flg',
-			'nekos.img_fn as img_fn',
-			'nekos.note as note',
-			'nekos.sort_no as sort_no',
-			'nekos.delete_flg as delete_flg',
+			'neko_types.id as id',
+			'neko_types.neko_type_name as neko_type_name',
+			'neko_types.sort_no as sort_no',
+			'neko_types.delete_flg as delete_flg',
 			'users.nickname as update_user',
-			'nekos.ip_addr as ip_addr',
-			'nekos.created_at as created_at',
-			'nekos.updated_at as updated_at',
+			'neko_types.ip_addr as ip_addr',
+			'neko_types.created_at as created_at',
+			'neko_types.updated_at as updated_at',
 
 		    // CBBXE
 			);
 		
 		// メイン検索
 		if(!empty($searches['main_search'])){
-			$concat = DB::raw("CONCAT( IFNULL(nekos.neko_name, '') ,IFNULL(nekos.tell, '') ,IFNULL(nekos.address, '') ,IFNULL(nekos.note, '') ) ");
+			$concat = DB::raw("CONCAT( IFNULL(neko_types.neko_type_name, '') ,IFNULL(neko_types.tell, '') ,IFNULL(neko_types.address, '') ,IFNULL(neko_types.note, '') ) ");
 			$query = $query->where($concat, 'LIKE', "%{$searches['main_search']}%");
 		}
 		
@@ -129,61 +115,24 @@ class Neko extends BaseX
 
 	    // id
 	    if(!empty($searches['id'])){
-	        $query = $query->where('nekos.id',$searches['id']);
+	        $query = $query->where('neko_types.id',$searches['id']);
 	    }
 
-	    // neko_val
-	    if(!empty($searches['neko_val'])){
-	        $query = $query->where('nekos.neko_val',$searches['neko_val']);
-	    }
-
-	    // neko_name
-	    if(!empty($searches['neko_name'])){
-	        $query = $query->where('nekos.neko_name', 'LIKE', "%{$searches['neko_name']}%");
-	    }
-
-	    // neko_date
-	    if(!empty($searches['neko_date'])){
-	        $query = $query->where('nekos.neko_date',$searches['neko_date']);
-	    }
-
-	    // 猫種別
-	    if(!empty($searches['neko_type'])){
-	        $query = $query->where('nekos.neko_type',$searches['neko_type']);
-	    }
-
-	    // neko_dt
-	    if(!empty($searches['neko_dt'])){
-	        $query = $query->where('nekos.neko_dt',$searches['neko_dt']);
-	    }
-
-	    // 無効フラグ
-	    if(!empty($searches['delete_flg'])){
-	        $query = $query->where('nekos.delete_flg',$searches['delete_flg']);
-	    }else{
-	        $query = $query->where('nekos.delete_flg', 0);
-	    }
-
-	    // 画像ファイル名
-	    if(!empty($searches['img_fn'])){
-	        $query = $query->where('nekos.img_fn', 'LIKE', "%{$searches['img_fn']}%");
-	    }
-
-	    // 備考
-	    if(!empty($searches['note'])){
-	        $query = $query->where('nekos.note', 'LIKE', "%{$searches['note']}%");
+	    // neko_type_name
+	    if(!empty($searches['neko_type_name'])){
+	        $query = $query->where('neko_types.neko_type_name', 'LIKE', "%{$searches['neko_type_name']}%");
 	    }
 
 	    // 順番
 	    if(!empty($searches['sort_no'])){
-	        $query = $query->where('nekos.sort_no',$searches['sort_no']);
+	        $query = $query->where('neko_types.sort_no',$searches['sort_no']);
 	    }
 
 	    // 無効フラグ
 	    if(!empty($searches['delete_flg'])){
-	        $query = $query->where('nekos.delete_flg',$searches['delete_flg']);
+	        $query = $query->where('neko_types.delete_flg',$searches['delete_flg']);
 	    }else{
-	        $query = $query->where('nekos.delete_flg', 0);
+	        $query = $query->where('neko_types.delete_flg', 0);
 	    }
 
 	    // 更新者
@@ -193,17 +142,17 @@ class Neko extends BaseX
 
 	    // IPアドレス
 	    if(!empty($searches['ip_addr'])){
-	        $query = $query->where('nekos.ip_addr', 'LIKE', "%{$searches['ip_addr']}%");
+	        $query = $query->where('neko_types.ip_addr', 'LIKE', "%{$searches['ip_addr']}%");
 	    }
 
 	    // 生成日時
 	    if(!empty($searches['created_at'])){
-	        $query = $query->where('nekos.created_at',$searches['created_at']);
+	        $query = $query->where('neko_types.created_at',$searches['created_at']);
 	    }
 
 	    // 更新日
 	    if(!empty($searches['updated_at'])){
-	        $query = $query->where('nekos.updated_at',$searches['updated_at']);
+	        $query = $query->where('neko_types.updated_at',$searches['updated_at']);
 	    }
 
 		// CBBXE
@@ -217,7 +166,7 @@ class Neko extends BaseX
 	 * @return int 順番
 	 */
 	public function nextSortNo(){
-		$query = DB::table('nekos')->selectRaw('MAX(sort_no) AS max_sort_no');
+		$query = DB::table('neko_types')->selectRaw('MAX(sort_no) AS max_sort_no');
 		$res = $query->first();
 		$sort_no = $res->max_sort_no ?? 0;
 		$sort_no++;

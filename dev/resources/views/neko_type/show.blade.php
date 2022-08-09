@@ -17,7 +17,7 @@ $ver_str = '?v=' . $this_page_version;
 	<link href="{{ asset('/css/common/style.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/Sales/show.css')  . $ver_str}}" rel="stylesheet">
 	
-	<title>ネコ管理・詳細表示</title>
+	<title>ネコ種別管理・詳細表示</title>
 	
 </head>
 
@@ -34,8 +34,8 @@ $ver_str = '?v=' . $this_page_version;
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="{{ url('/') }}">ホーム</a></li>
-	<li class="breadcrumb-item"><a href="{{ url('neko') }}">ネコ管理・一覧</a></li>
-	<li class="breadcrumb-item active" aria-current="page">ネコ管理・詳細フォーム</li>
+	<li class="breadcrumb-item"><a href="{{ url('neko_type') }}">ネコ種別管理・一覧</a></li>
+	<li class="breadcrumb-item active" aria-current="page">ネコ種別管理・詳細フォーム</li>
   </ol>
 </nav>
 
@@ -52,7 +52,7 @@ $ver_str = '?v=' . $this_page_version;
 
 <div>
 	<div class="form_w" >
-		<form method="POST" action="{{ url('neko/update') }}">
+		<form method="POST" action="{{ url('neko_type/update') }}">
 			@csrf
 			
 			<input type="hidden" name="id" value="{{old('id', $ent->id)}}" />
@@ -63,38 +63,8 @@ $ver_str = '?v=' . $this_page_version;
 				<div class="col-12 col-md-7">{{ $ent-> id}}</div>
 			</div>
 			<div class="row">
-				<label for="neko_val" class="col-12 col-md-5 col-form-label">neko_val</label>
-				<div class="col-12 col-md-7">{{ $ent-> neko_val}}</div>
-			</div>
-			<div class="row">
-				<label for="neko_name" class="col-12 col-md-5 col-form-label">neko_name</label>
-				<div class="col-12 col-md-7">{{ $ent-> neko_name}}</div>
-			</div>
-			<div class="row">
-				<label for="neko_date" class="col-12 col-md-5 col-form-label">neko_date</label>
-				<div class="col-12 col-md-7">{{ $ent-> neko_date}}</div>
-			</div>
-			<div class="row">
-				<label for="neko_type" class="col-12 col-md-5 col-form-label">猫種別</label>
-				<div class="col-12 col-md-7">{{ $nekoTypeList[$ent->neko_type] ?? '' }}</div>
-			</div>
-			<div class="row">
-				<label for="neko_dt" class="col-12 col-md-5 col-form-label">neko_dt</label>
-				<div class="col-12 col-md-7">{{ $ent-> neko_dt}}</div>
-			</div>
-			<div class="row">
-				<label for="neko_flg" class="col-12 col-md-5 col-form-label">ネコフラグ</label>
-				<div class="col-12 col-md-7">{{ $ent-> neko_flg}}</div>
-			</div>
-			<div class="row">
-				<label for="img_fn" class="col-12 col-md-5 col-form-label">画像ファイル名</label>
-				<div class="col-12 col-md-7">{{ $ent-> img_fn}}</div>
-			</div>
-			<div class="row">
-				<label for="note" class="col-12 col-md-5 col-form-label">備考</label>
-				<div class="col-12 col-md-7">
-					<div style="white-space:pre-wrap; word-wrap:break-word;">{{ $ent->note }}</div>
-				</div>
+				<label for="neko_type_name" class="col-12 col-md-5 col-form-label">neko_type_name</label>
+				<div class="col-12 col-md-7">{{ $ent-> neko_type_name}}</div>
 			</div>
 			<div class="row">
 				<label for="sort_no" class="col-12 col-md-5 col-form-label">順番</label>

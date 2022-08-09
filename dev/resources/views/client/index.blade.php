@@ -18,7 +18,6 @@ $ver_str = '?v=' . $this_page_version;
 	<link href="{{ asset('/js/font/css/open-iconic.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/common/clm_show_hide.css')  . $ver_str}}" rel="stylesheet">
 	<link href="{{ asset('/css/common/common.css')  . $ver_str}}" rel="stylesheet">
-	<link href="{{ asset('/css/common/style.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/Client/index.css')  . $ver_str}}" rel="stylesheet">
 	
 	<title>顧客管理画面</title>
@@ -31,9 +30,7 @@ $ver_str = '?v=' . $this_page_version;
 
 <div id="app"><!-- vue.jsの場所・未使用 --></div>
 
-<div class="d-flex flex-row m-1 m-sm-4 px-sm-5 px-1">
-@include('layouts.side')
-<main class="flex-fill mx-sm-2 px-sm-5 mx-1 px-1 w-100">
+
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">

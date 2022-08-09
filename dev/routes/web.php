@@ -46,6 +46,30 @@ Route::post('client/disabled', 'App\Http\Controllers\ClientController@disabled')
 Route::post('client/destroy', 'App\Http\Controllers\ClientController@destroy');
 Route::get('client/csv_download', 'App\Http\Controllers\ClientController@csv_download');
 
+// ネコ管理画面
+Route::get('neko', 'App\Http\Controllers\NekoController@index');
+Route::get('neko/create', 'App\Http\Controllers\NekoController@create');
+Route::post('neko/store', 'App\Http\Controllers\NekoController@store');
+Route::get('neko/show', 'App\Http\Controllers\NekoController@show');
+Route::get('neko/edit', 'App\Http\Controllers\NekoController@edit');
+Route::post('neko/update', 'App\Http\Controllers\NekoController@update');
+Route::post('neko/auto_save', 'App\Http\Controllers\NekoController@auto_save');
+Route::post('neko/disabled', 'App\Http\Controllers\NekoController@disabled');
+Route::post('neko/destroy', 'App\Http\Controllers\NekoController@destroy');
+Route::get('neko/csv_download', 'App\Http\Controllers\NekoController@csv_download');
+
+// ネコ種別管理画面
+Route::get('neko_type', 'App\Http\Controllers\ClientController@index');
+Route::get('neko_type/create', 'App\Http\Controllers\ClientController@create');
+Route::post('neko_type/store', 'App\Http\Controllers\ClientController@store');
+Route::get('neko_type/show', 'App\Http\Controllers\ClientController@show');
+Route::get('neko_type/edit', 'App\Http\Controllers\ClientController@edit');
+Route::post('neko_type/update', 'App\Http\Controllers\ClientController@update');
+Route::post('neko_type/auto_save', 'App\Http\Controllers\ClientController@auto_save');
+Route::post('neko_type/disabled', 'App\Http\Controllers\ClientController@disabled');
+Route::post('neko_type/destroy', 'App\Http\Controllers\ClientController@destroy');
+Route::get('neko_type/csv_download', 'App\Http\Controllers\ClientController@csv_download');
+
 
 // ユーザー管理画面
 Route::get('user_mng', 'App\Http\Controllers\UserMngController@index');

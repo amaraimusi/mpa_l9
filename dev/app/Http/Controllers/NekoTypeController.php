@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Neko;
+use App\Models\NekoType;
 
 
-class NekoController extends BaseXController{
+class NekoTypeController extends BaseXController{
 	
 	// 画面のバージョン → 開発者はこの画面を修正したらバージョンを変更すること。バージョンを変更するとキャッシュやセッションのクリアが自動的に行われます。
 	public $this_page_version = '1.0.1';
@@ -29,7 +29,7 @@ class NekoController extends BaseXController{
 			'per_page' => 'nullable|numeric',
 		]);
 		
-		$sesSearches = session('neko_searches_key');// セッションからセッション検索データを受け取る
+		$sesSearches = session('neko_type_searches_key');// セッションからセッション検索データを受け取る
 
 		// セッション検索データの画面から旧画面バージョンを受け取る
 		$new_version = $this->judgeNewVersion($sesSearches, $this->this_page_version);
@@ -43,17 +43,10 @@ class NekoController extends BaseXController{
 				
 				// CBBXS-3000
 				'id' => $request->id, // id
-				'neko_val' => $request->neko_val, // neko_val
-				'neko_name' => $request->neko_name, // neko_name
-				'neko_date' => $request->neko_date, // neko_date
-				'neko_type' => $request->neko_type, // 猫種別
-				'neko_dt' => $request->neko_dt, // neko_dt
-				'neko_flg' => $request->neko_flg, // ネコフラグ
-				'img_fn' => $request->img_fn, // 画像ファイル名
-				'note' => $request->note, // 備考
+				'neko_type_name' => $request->neko_type_name, // neko_type_name
 				'sort_no' => $request->sort_no, // 順番
 				'delete_flg' => $request->delete_flg, // 無効フラグ
-				'update_user_id' => $request->update_user_id, // 更新者
+				'update_user_id' => $request->update_user_id, // 更新ユーザーID
 				'ip_addr' => $request->ip_addr, // IPアドレス
 				'created_at' => $request->created_at, // 生成日時
 				'updated_at' => $request->updated_at, // 更新日
@@ -72,14 +65,14 @@ class NekoController extends BaseXController{
 
 		$searches['this_page_version'] = $this->this_page_version; // 画面バージョン
 		$searches['new_version'] = $new_version; // 新バージョンフラグ
-		session(['neko_searches_key' => $searches]); // セッションに検索データを書き込む
+		session(['neko_type_searches_key' => $searches]); // セッションに検索データを書き込む
 
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
-		$model = new Neko();
+		$model = new NekoType();
 		$data = $model->getData($searches);
 
-	   return view('neko.index', [
+	   return view('neko_type.index', [
 			'data'=>$data,
 			'searches'=>$searches,
 			'userInfo'=>$userInfo,
@@ -102,7 +95,7 @@ class NekoController extends BaseXController{
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
-		return view('neko.create', [
+		return view('neko_type.create', [
 			'userInfo'=>$userInfo,
 			'this_page_version'=>$this->this_page_version,
 			
@@ -124,10 +117,7 @@ class NekoController extends BaseXController{
 		$request->validate([
 			// CBBXS-3030
 			'id' => 'nullable|numeric',
-			'neko_val' => 'nullable|numeric',
-	        'neko_name' => 'nullable|max:255',
-			'neko_date' => 'nullable|date',
-	        'img_fn' => 'nullable|max:256',
+	        'neko_type_name' => 'nullable|max:255',
 			'sort_no' => 'nullable|numeric',
 			'update_user_id' => 'nullable|numeric',
 	        'ip_addr' => 'nullable|max:40',
@@ -137,16 +127,9 @@ class NekoController extends BaseXController{
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
-		$model = new Neko();
+		$model = new NekoType();
 		// CBBXS-3032
-		$model->neko_val = $request->neko_val; // neko_val
-		$model->neko_name = $request->neko_name; // neko_name
-		$model->neko_date = $request->neko_date; // neko_date
-		$model->neko_type = $request->neko_type; // 猫種別
-		$model->neko_dt = $request->neko_dt; // neko_dt
-		$model->neko_flg = $request->neko_flg; // ネコフラグ
-		$model->img_fn = $request->img_fn; // 画像ファイル名
-		$model->note = $request->note; // 備考
+		$model->neko_type_name = $request->neko_type_name; // neko_type_name
 		$model->created_at = $request->created_at; // 生成日時
 		$model->updated_at = $request->updated_at; // 更新日
 
@@ -159,7 +142,7 @@ class NekoController extends BaseXController{
 
 		$model->save();
 		
-		return redirect('/neko');
+		return redirect('/neko_type');
 		
 	}
 	
@@ -175,7 +158,7 @@ class NekoController extends BaseXController{
 		// ログアウトになっていたらログイン画面にリダイレクト
 		if(\Auth::id() == null) return redirect('login');
 		
-		$model = new Neko();
+		$model = new NekoType();
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
 		$id = $request->id;
@@ -184,9 +167,9 @@ class NekoController extends BaseXController{
 			die;
 		}
 		
-		$ent = Neko::find($id);
+		$ent = NekoType::find($id);
 
-		return view('neko.show', [
+		return view('neko_type.show', [
 			'ent'=>$ent,
 			'userInfo'=>$userInfo,
 			'this_page_version'=>$this->this_page_version,
@@ -207,7 +190,7 @@ class NekoController extends BaseXController{
 		// ログアウトになっていたらログイン画面にリダイレクト
 		if(\Auth::id() == null) return redirect('login');
 
-		$model = new Neko();
+		$model = new NekoType();
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
 		$id = $request->id;
@@ -216,9 +199,9 @@ class NekoController extends BaseXController{
 			die;
 		}
 	
-		$ent = Neko::find($id);
+		$ent = NekoType::find($id);
 		
-		return view('neko.edit', [
+		return view('neko_type.edit', [
 			'ent'=>$ent,
 			'userInfo'=>$userInfo,
 			'this_page_version'=>$this->this_page_version,
@@ -243,10 +226,7 @@ class NekoController extends BaseXController{
 		$request->validate([
 		   // CBBXS-3031
 			'id' => 'nullable|numeric',
-			'neko_val' => 'nullable|numeric',
-	        'neko_name' => 'nullable|max:255',
-			'neko_date' => 'nullable|date',
-	        'img_fn' => 'nullable|max:256',
+	        'neko_type_name' => 'nullable|max:255',
 			'sort_no' => 'nullable|numeric',
 			'update_user_id' => 'nullable|numeric',
 	        'ip_addr' => 'nullable|max:40',
@@ -254,19 +234,12 @@ class NekoController extends BaseXController{
 			// CBBXE
 		]);
 		
-		$model = Neko::find($request->id);
+		$model = NekoType::find($request->id);
 
 		$model->id = $request->id;
 		
 		// CBBXS-3033
-		$model->neko_val = $request->neko_val; // neko_val
-		$model->neko_name = $request->neko_name; // neko_name
-		$model->neko_date = $request->neko_date; // neko_date
-		$model->neko_type = $request->neko_type; // 猫種別
-		$model->neko_dt = $request->neko_dt; // neko_dt
-		$model->neko_flg = $request->neko_flg; // ネコフラグ
-		$model->img_fn = $request->img_fn; // 画像ファイル名
-		$model->note = $request->note; // 備考
+		$model->neko_type_name = $request->neko_type_name; // neko_type_name
 		$model->created_at = $request->created_at; // 生成日時
 		$model->updated_at = $request->updated_at; // 更新日
 
@@ -279,7 +252,7 @@ class NekoController extends BaseXController{
 		
  		$model->update();
 		
-		return redirect('/neko');
+		return redirect('/neko_type');
 		
 	}
 	
@@ -300,7 +273,7 @@ class NekoController extends BaseXController{
 		$id = $param['id'];
 		$action_flg =  $param['action_flg'];
 
-		$model = Neko::find($id);
+		$model = NekoType::find($id);
 		
 		if(empty($action_flg)){
 			$model->delete_flg = 0; // 削除フラグをOFFにする
@@ -335,7 +308,7 @@ class NekoController extends BaseXController{
 		$param = json_decode($json,true);//JSON文字を配列に戻す
 		$id = $param['id'];
 		
-		$model = new Neko();
+		$model = new NekoType();
 		$model->destroy($id);// idを指定して抹消（データベースかDELETE）
 		
 		$res = ['success'];
@@ -361,7 +334,7 @@ class NekoController extends BaseXController{
 		
 		$data = json_decode($json,true);//JSON文字を配列に戻す
 		
-		$model = new Neko();
+		$model = new NekoType();
 		$model->saveAll($data);
 
 		$res = ['success'];
@@ -381,15 +354,15 @@ class NekoController extends BaseXController{
 		// ログアウトになっていたらログイン画面にリダイレクト
 		if(\Auth::id() == null) return redirect('login');
 
-		$searches = session('neko_searches_key');// セッションからセッション検索データを受け取る
+		$searches = session('neko_type_searches_key');// セッションからセッション検索データを受け取る
 
-		$model = new Neko();
+		$model = new NekoType();
 		$data = $model->getData($searches, 'csv');
 		
 		// データ件数が0件ならCSVダウンロードを中断し、一覧画面にリダイレクトする。
 		$count = count($data);
 		if($count == 0){
-			return redirect('/neko');
+			return redirect('/neko_type');
 		}
 		
 		// ダブルクォートで値を囲む
@@ -413,7 +386,7 @@ class NekoController extends BaseXController{
 		//CSVファイル名を作成
 		$date = new \DateTime();
 		$strDate=$date->format("Y-m-d");
-		$fn='neko'.$strDate.'.csv';
+		$fn='neko_type'.$strDate.'.csv';
 		
 		//CSVダウンロード
 		$this->csvOutput($fn, $data);

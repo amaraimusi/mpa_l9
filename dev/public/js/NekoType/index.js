@@ -22,11 +22,11 @@ $(()=>{
 	
 	
 	// 行入替機能の初期化
-	rowExchange = new RowExchange('neko_mng_tbl', data, null, (param)=>{
+	rowExchange = new RowExchange('neko_type_mng_tbl', data, null, (param)=>{
 		// 行入替直後のコールバック
 		
 		// 行入替後、再び行入替しなければ3秒後に自動DB保存が実行される。
-		let auto_save_url = 'neko/auto_save';
+		let auto_save_url = 'neko_type/auto_save';
 		autoSave.saveRequest(param.data, auto_save_url, ()=>{
 			// DB保存後のコールバック
 			location.reload(true); // ブラウザをリロードする
@@ -51,17 +51,10 @@ function initClmShowHide(){
 	let iniClmData = [
 		// CBBXS-3036
 		-1, // ID
-		1, // neko_val
-		1, // neko_name
-		1, // neko_date
-		1, // 猫種別
-		1, // neko_dt
-		1, // ネコフラグ
-		1, // 画像ファイル名
-		1, // 備考
+		1, // neko_type_name
 		0, // 順番
 		0, // 無効フラグ
-		0, // 更新者
+		0, // 更新ユーザーID
 		0, // IPアドレス
 		1, // 生成日時
 		1, // 更新日
@@ -72,7 +65,7 @@ function initClmShowHide(){
 	
 	let csh = new ClmShowHide();
 	
-	csh.init('neko_mng_tbl', 'csh_div', iniClmData);
+	csh.init('neko_type_mng_tbl', 'csh_div', iniClmData);
 	
 	return csh;
 }
@@ -107,7 +100,7 @@ function disabledBtn(btnElm, action_flg){
 	}
 	
 	let json_str = JSON.stringify(data);//データをJSON文字列にする。
-	let url = 'neko/disabled'; // Ajax通信先URL
+	let url = 'neko_type/disabled'; // Ajax通信先URL
 	
 	let fd = new FormData(); // 送信フォームデータ
 	fd.append( "key1", json_str );
@@ -163,7 +156,7 @@ function destroyBtn(btnElm){
 	}
 	
 	let json_str = JSON.stringify(data);//データをJSON文字列にする。
-	let url = 'neko/destroy'; // Ajax通信先URL
+	let url = 'neko_type/destroy'; // Ajax通信先URL
 	
 	let fd = new FormData(); // 送信フォームデータ
 	fd.append( "key1", json_str );

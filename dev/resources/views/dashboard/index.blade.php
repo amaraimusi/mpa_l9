@@ -31,6 +31,39 @@
 <div id="app"><!-- vue.jsの場所・未使用 --></div>
 
 	<div id="org_div" style="margin-top:20px;margin-bottom:60px;">
+	
+	
+		<div class="row" style="margin-top:20px;">
+		
+			<!-- カード -->
+			<div class="col-sm-4">
+				<div class="card border-primary ">
+					<div class="card-body" >
+						<h5 class="card-title text-primary" style="font-weight:bold">ネコ管理（見本版）</h5>
+						<div class="card_msg">
+							<p class="card-text" style="height:120px">管理画面の見本です。</p>
+						</div>
+						<a href="{{url('neko')}}" class="btn btn-primary">ページへ移動</a>
+					</div>
+				</div>
+			</div>
+		
+			<!-- カード -->
+			<div class="col-sm-4">
+				<div class="card border-primary ">
+					<div class="card-body" >
+						<h5 class="card-title text-primary" style="font-weight:bold">ネコ種別マスタ管理</h5>
+						<div class="card_msg">
+							<p class="card-text" style="height:120px">マスタ管理画面の見本です。</p>
+						</div>
+						<a href="{{url('neko_type')}}" class="btn btn-primary">ページへ移動</a>
+					</div>
+				</div>
+			</div>
+
+		</div><!--  row -->
+		
+		
 		<div class="row" style="margin-top:20px;">
 		
 			<!-- カード -->
