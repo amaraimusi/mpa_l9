@@ -49,6 +49,7 @@ function initClmShowHide(){
 	// 列毎に初期の列表示状態を設定する。
 	// -1:列切替対象外,  0:初期時はこの列を非表示, 1:最初からこの列は表示
 	let iniClmData = [
+		// CBBXS-3036
 		-1, // ID
 		1, // 顧客名
 		1, // 電話番号
@@ -60,6 +61,7 @@ function initClmShowHide(){
 		0, // IPアドレス
 		0, // 生成日時
 		0, // 更新日
+		// CBBXE
 		-1 // ボタン列
 	];
 	
