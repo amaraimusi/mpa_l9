@@ -57,6 +57,7 @@ $ver_str = '?v=' . $this_page_version;
 			
 			<input type="hidden" name="id" value="{{old('id', $ent->id)}}" />
 			
+			<!-- CBBXS-3007 -->
 			<div class="row">
 				<label for="client_name" class="col-12 col-md-5 col-form-label">顧客名</label>
 				<div class="col-12 col-md-7">
@@ -84,6 +85,7 @@ $ver_str = '?v=' . $this_page_version;
 					<textarea name="note" id="note" class="form-control form-control-lg" placeholder="備考"  maxlength="2000">{{old('note', $ent->note)}}</textarea>
 				</div>
 			</div>
+			<!-- CBBXE -->
 
 			<div class="row">
 				<div class="col-12" style="text-align:right">

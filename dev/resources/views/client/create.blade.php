@@ -54,7 +54,7 @@ $ver_str = '?v=' . $this_page_version;
 	<div class="form_w" >
 		<form method="POST" action="{{ url('client/store') }}" onsubmit="return checkDoublePress()">
 			@csrf
-			
+			<!-- CBBXS-3006 -->
 			<div class="row">
 				<label for="client_name" class="col-12 col-md-5 col-form-label">顧客名</label>
 				<div class="col-12 col-md-7">
@@ -89,7 +89,7 @@ $ver_str = '?v=' . $this_page_version;
 					<div id="submit_msg" class="text-success" style="display:none" >データベースに登録中です...</div>
 				</div>
 			</div>
-			
+			<!-- CBBXE -->
 			
 		</form>
 		

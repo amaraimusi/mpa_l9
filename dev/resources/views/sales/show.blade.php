@@ -102,7 +102,7 @@ $ver_str = '?v=' . $this_page_version;
 				<label for="note" class="col-12 col-md-5 col-form-label">備考</label>
 				<div class="col-12 col-md-7">
 					<div style="white-space:pre-wrap; word-wrap:break-word;">{{ $ent->note }}</div>
-			</div>
+				</div>
 			</div>
 
 			<div class="row">

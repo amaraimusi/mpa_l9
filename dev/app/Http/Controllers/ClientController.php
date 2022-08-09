@@ -20,12 +20,12 @@ class ClientController extends BaseXController{
 	 */
 	public function index(Request $request){
 
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
 
 		// 検索データのバリデーション
-	    $validated = $request->validate([
-	        'id' => 'nullable|numeric',
+		$validated = $request->validate([
+			'id' => 'nullable|numeric',
 			'per_page' => 'nullable|numeric',
 		]);
 		
@@ -39,18 +39,18 @@ class ClientController extends BaseXController{
 		// リクエストのパラメータが空でない、または新バージョンフラグがONである場合、リクエストから検索データを受け取る
 		if(!empty($request->all()) || $new_version == 1){
 			$searches = [
-			    'main_search' => $request->main_search, // メイン検索
-			    
-			    // CBBXS-3000
-			    'id' => $request->id, // ID
-			    'client_name' => $request->client_name, // 顧客名
-			    'tell' => $request->tell, // 電話番号
-			    'address' => $request->address, // 住所
+				'main_search' => $request->main_search, // メイン検索
+				
+				// CBBXS-3000
+				'id' => $request->id, // ID
+				'client_name' => $request->client_name, // 顧客名
+				'tell' => $request->tell, // 電話番号
+				'address' => $request->address, // 住所
 				'note' => $request->note, // 備考
 				'delete_flg' => $request->delete_flg, // 無効フラグ
-			    'update_user' => $request->update_user, // 更新者
-			    // CBBXE
-			    
+				'update_user' => $request->update_user, // 更新者
+				// CBBXE
+				
 				'sort' => $request->sort, // 並びフィールド
 				'desc' => $request->desc, // 並び向き
 				'per_page' => $request->per_page, // 行制限数
@@ -87,9 +87,9 @@ class ClientController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function create(Request $request){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
@@ -109,31 +109,34 @@ class ClientController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function store(Request $request){
-	    
-	    if(\Auth::id() == null) die;
+		
+		if(\Auth::id() == null) die;
 
-	    $request->validate([
-	        // CBBXS-30011
-	        'client_name' => 'nullable|max:200',
-	        'tell' => 'nullable|max:20',
-	        'address' => 'nullable|max:200',
-	        'note' => 'nullable|max:2000',
-	        // CBBXE
+		$request->validate([
+			// CBBXS-3030
+			'client_name' => 'nullable|max:200',
+			'tell' => 'nullable|max:20',
+			'address' => 'nullable|max:200',
+			'note' => 'nullable|max:2000',
+			// CBBXE
 		]);
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
-		$client = new Client();
-		$client->client_name = $request->client_name;
-		$client->tell = $request->tell;
-		$client->address = $request->address;
-		$client->note = $request->note;
-		$client->sort_no = $client->nextSortNo();
-		$client->delete_flg = 0;
-		$client->update_user_id = $userInfo['id'];
-		$client->ip_addr = $userInfo['ip_addr'];
+		$model = new Client();
+		// CBBXS-3032
+		$model->client_name = $request->client_name;
+		$model->tell = $request->tell;
+		$model->address = $request->address;
+		$model->note = $request->note;
+		// CBBXE
+		
+		$model->sort_no = $model->nextSortNo();
+		$model->delete_flg = 0;
+		$model->update_user_id = $userInfo['id'];
+		$model->ip_addr = $userInfo['ip_addr'];
 
-		$client->save();
+		$model->save();
 		
 		return redirect('/client');
 		
@@ -147,28 +150,28 @@ class ClientController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function show(Request $request){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
-	    
-	    $model = new Client();
-	    $userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
-	    
-	    $id = $request->id;
-	    if(!is_numeric($id)){
-	        echo 'invalid access';
-	        die;
-	    }
-	    
-	    $ent = Client::find($id);
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
+		
+		$model = new Client();
+		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
+		
+		$id = $request->id;
+		if(!is_numeric($id)){
+			echo 'invalid access';
+			die;
+		}
+		
+		$ent = Client::find($id);
 
-	    return view('client.show', [
-	        'ent'=>$ent,
-	        'userInfo'=>$userInfo,
-	        'this_page_version'=>$this->this_page_version,
-	        
-	    ]);
-	    
+		return view('client.show', [
+			'ent'=>$ent,
+			'userInfo'=>$userInfo,
+			'this_page_version'=>$this->this_page_version,
+			
+		]);
+		
 	}
 	
 	
@@ -179,9 +182,9 @@ class ClientController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function edit(Request $request){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
 
 		$model = new Client();
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
@@ -196,8 +199,8 @@ class ClientController extends BaseXController{
 		
 		return view('client.edit', [
 			'ent'=>$ent,
-		    'userInfo'=>$userInfo,
-		    'this_page_version'=>$this->this_page_version,
+			'userInfo'=>$userInfo,
+			'this_page_version'=>$this->this_page_version,
 			
 		]);
 		
@@ -211,32 +214,37 @@ class ClientController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function update(Request $request){
-	    
-	    if(\Auth::id() == null) die();
+		
+		if(\Auth::id() == null) die();
 
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 
 		$request->validate([
-		    'client_name' => 'nullable|max:200',
-		    'tell' => 'nullable|max:20',
-		    'address' => 'nullable|max:200',
-		    'note' => 'nullable|max:2000',
-		    
+		   // CBBXS-3031
+			'client_name' => 'nullable|max:200',
+			'tell' => 'nullable|max:20',
+			'address' => 'nullable|max:200',
+			'note' => 'nullable|max:2000',
+			// CBBXE
 		]);
 		
-		$client = Client::find($request->id);
+		$model = Client::find($request->id);
 
-		$client->id = $request->id;
-		$client->client_name = $request->client_name;
-		$client->tell = $request->tell;
-		$client->address = $request->address;
-		$client->note = $request->note;
-		$client->sort_no = $client->nextSortNo();
-		$client->delete_flg = 0;
-		$client->update_user_id = $userInfo['id'];
-		$client->ip_addr = $userInfo['ip_addr'];
+		$model->id = $request->id;
 		
- 		$client->update();
+		// CBBXS-3033
+		$model->client_name = $request->client_name;
+		$model->tell = $request->tell;
+		$model->address = $request->address;
+		$model->note = $request->note;
+		// CBBXE
+		
+		$model->sort_no = $model->nextSortNo();
+		$model->delete_flg = 0;
+		$model->update_user_id = $userInfo['id'];
+		$model->ip_addr = $userInfo['ip_addr'];
+		
+ 		$model->update();
 		
 		return redirect('/client');
 		
@@ -247,35 +255,35 @@ class ClientController extends BaseXController{
 	 * 削除/削除取消アクション(無効/有効アクション）
 	 */
 	public function disabled(){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
-	    
-	    $userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
-	    
-	    $json=$_POST['key1'];
-	    
-	    $param = json_decode($json,true);//JSON文字を配列に戻す
-	    $id = $param['id'];
-	    $action_flg =  $param['action_flg'];
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
+		
+		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
+		
+		$json=$_POST['key1'];
+		
+		$param = json_decode($json,true);//JSON文字を配列に戻す
+		$id = $param['id'];
+		$action_flg =  $param['action_flg'];
 
-	    $client = Client::find($id);
-	    
-	    if(empty($action_flg)){
-	        $client->delete_flg = 0; // 削除フラグをOFFにする
-	    }else{
-	        $client->delete_flg = 1; // 削除フラグをONにする
-	    }
-	    
-	    $client->update_user_id = $userInfo['id'];
-	    $client->ip_addr = $userInfo['ip_addr'];
-	    
-	    $client->update();
-	    
-	    $res = ['success'];
-	    $json_str = json_encode($res);//JSONに変換
-	    
-	    return $json_str;
+		$model = Client::find($id);
+		
+		if(empty($action_flg)){
+			$model->delete_flg = 0; // 削除フラグをOFFにする
+		}else{
+			$model->delete_flg = 1; // 削除フラグをONにする
+		}
+		
+		$model->update_user_id = $userInfo['id'];
+		$model->ip_addr = $userInfo['ip_addr'];
+		
+		$model->update();
+		
+		$res = ['success'];
+		$json_str = json_encode($res);//JSONに変換
+		
+		return $json_str;
 	}
 	
 	
@@ -283,24 +291,24 @@ class ClientController extends BaseXController{
 	 * 抹消アクション(無効/有効アクション）
 	 */
 	public function destroy(){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
-	    
-	    $userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
-	    
-	    $json=$_POST['key1'];
-	    
-	    $param = json_decode($json,true);//JSON文字を配列に戻す
-	    $id = $param['id'];
-	    
-	    $client = new Client();
-	    $client->destroy($id);// idを指定して抹消（データベースかDELETE）
-	    
-	    $res = ['success'];
-	    $json_str = json_encode($res);//JSONに変換
-	    
-	    return $json_str;
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
+		
+		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
+		
+		$json=$_POST['key1'];
+		
+		$param = json_decode($json,true);//JSON文字を配列に戻す
+		$id = $param['id'];
+		
+		$model = new Client();
+		$model->destroy($id);// idを指定して抹消（データベースかDELETE）
+		
+		$res = ['success'];
+		$json_str = json_encode($res);//JSONに変換
+		
+		return $json_str;
 	}
 	
 	
@@ -312,16 +320,16 @@ class ClientController extends BaseXController{
 	 *
 	 */
 	public function auto_save(){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) die;
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) die;
 
 		$json=$_POST['key1'];
 		
 		$data = json_decode($json,true);//JSON文字を配列に戻す
 		
-		$client = new Client();
-		$client->saveAll($data);
+		$model = new Client();
+		$model->saveAll($data);
 
 		$res = ['success'];
 		$json_str = json_encode($res);//JSONに変換
@@ -336,9 +344,9 @@ class ClientController extends BaseXController{
 	 * 一覧画面のCSVダウンロードボタンを押したとき、一覧データをCSVファイルとしてダウンロードします。
 	 */
 	public function csv_download(){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
 
 		$searches = session('client_searches_key');// セッションからセッション検索データを受け取る
 
@@ -348,7 +356,7 @@ class ClientController extends BaseXController{
 		// データ件数が0件ならCSVダウンロードを中断し、一覧画面にリダイレクトする。
 		$count = count($data);
 		if($count == 0){
-		    return redirect('/client');
+			return redirect('/client');
 		}
 		
 		// ダブルクォートで値を囲む

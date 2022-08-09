@@ -10,7 +10,7 @@ use App\Models\Neko;
 class NekoController extends BaseXController{
 	
 	// 画面のバージョン → 開発者はこの画面を修正したらバージョンを変更すること。バージョンを変更するとキャッシュやセッションのクリアが自動的に行われます。
-	public $this_page_version = '1.0.0';
+	public $this_page_version = '1.0.1';
 	
 	/**
 	 * indexページのアクション
@@ -20,12 +20,12 @@ class NekoController extends BaseXController{
 	 */
 	public function index(Request $request){
 
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
 
 		// 検索データのバリデーション
-	    $validated = $request->validate([
-	        'id' => 'nullable|numeric',
+		$validated = $request->validate([
+			'id' => 'nullable|numeric',
 			'per_page' => 'nullable|numeric',
 		]);
 		
@@ -39,9 +39,9 @@ class NekoController extends BaseXController{
 		// リクエストのパラメータが空でない、または新バージョンフラグがONである場合、リクエストから検索データを受け取る
 		if(!empty($request->all()) || $new_version == 1){
 			$searches = [
-			    'main_search' => $request->main_search, // メイン検索
-			    
-			    // CBBXS-3000
+				'main_search' => $request->main_search, // メイン検索
+				
+				// CBBXS-3000
 				'id' => $request->id, // id
 				'neko_val' => $request->neko_val, // neko_val
 				'neko_name' => $request->neko_name, // neko_name
@@ -58,8 +58,8 @@ class NekoController extends BaseXController{
 				'created' => $request->created, // 生成日時
 				'modified' => $request->modified, // 更新日
 
-			    // CBBXE
-			    
+				// CBBXE
+				
 				'sort' => $request->sort, // 並びフィールド
 				'desc' => $request->desc, // 並び向き
 				'per_page' => $request->per_page, // 行制限数
@@ -96,9 +96,9 @@ class NekoController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function create(Request $request){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
@@ -118,30 +118,44 @@ class NekoController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function store(Request $request){
-	    
-	    if(\Auth::id() == null) die;
+		
+		if(\Auth::id() == null) die;
 
-	    $request->validate([
-	        'neko_name' => 'nullable|max:200',
-	        'tell' => 'nullable|max:20',
-	        'address' => 'nullable|max:200',
-	        'note' => 'nullable|max:2000',
-			
+		$request->validate([
+			// CBBXS-3030
+			'id' => 'nullable|numeric',
+			'neko_val' => 'nullable|numeric',
+	        'neko_name' => 'nullable|max:255',
+			'neko_date' => 'nullable|date',
+	        'img_fn' => 'nullable|max:256',
+			'sort_no' => 'nullable|numeric',
+			'update_user_id' => 'nullable|numeric',
+	        'ip_addr' => 'nullable|max:40',
+
+			// CBBXE
 		]);
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
-		$neko = new Neko();
-		$neko->neko_name = $request->neko_name;
-		$neko->tell = $request->tell;
-		$neko->address = $request->address;
-		$neko->note = $request->note;
-		$neko->sort_no = $neko->nextSortNo();
-		$neko->delete_flg = 0;
-		$neko->update_user_id = $userInfo['id'];
-		$neko->ip_addr = $userInfo['ip_addr'];
+		$model = new Neko();
+		// CBBXS-3032
+		$model->neko_val = $request->neko_val; // neko_val
+		$model->neko_name = $request->neko_name; // neko_name
+		$model->neko_date = $request->neko_date; // neko_date
+		$model->neko_type = $request->neko_type; // 猫種別
+		$model->neko_dt = $request->neko_dt; // neko_dt
+		$model->neko_flg = $request->neko_flg; // ネコフラグ
+		$model->img_fn = $request->img_fn; // 画像ファイル名
+		$model->note = $request->note; // 備考
 
-		$neko->save();
+		// CBBXE
+		
+		$model->sort_no = $model->nextSortNo();
+		$model->delete_flg = 0;
+		$model->update_user_id = $userInfo['id'];
+		$model->ip_addr = $userInfo['ip_addr'];
+
+		$model->save();
 		
 		return redirect('/neko');
 		
@@ -155,28 +169,28 @@ class NekoController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function show(Request $request){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
-	    
-	    $model = new Neko();
-	    $userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
-	    
-	    $id = $request->id;
-	    if(!is_numeric($id)){
-	        echo 'invalid access';
-	        die;
-	    }
-	    
-	    $ent = Neko::find($id);
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
+		
+		$model = new Neko();
+		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
+		
+		$id = $request->id;
+		if(!is_numeric($id)){
+			echo 'invalid access';
+			die;
+		}
+		
+		$ent = Neko::find($id);
 
-	    return view('neko.show', [
-	        'ent'=>$ent,
-	        'userInfo'=>$userInfo,
-	        'this_page_version'=>$this->this_page_version,
-	        
-	    ]);
-	    
+		return view('neko.show', [
+			'ent'=>$ent,
+			'userInfo'=>$userInfo,
+			'this_page_version'=>$this->this_page_version,
+			
+		]);
+		
 	}
 	
 	
@@ -187,9 +201,9 @@ class NekoController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function edit(Request $request){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
 
 		$model = new Neko();
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
@@ -204,8 +218,8 @@ class NekoController extends BaseXController{
 		
 		return view('neko.edit', [
 			'ent'=>$ent,
-		    'userInfo'=>$userInfo,
-		    'this_page_version'=>$this->this_page_version,
+			'userInfo'=>$userInfo,
+			'this_page_version'=>$this->this_page_version,
 			
 		]);
 		
@@ -219,32 +233,47 @@ class NekoController extends BaseXController{
 	 * @return \Illuminate\View\View
 	 */
 	public function update(Request $request){
-	    
-	    if(\Auth::id() == null) die();
+		
+		if(\Auth::id() == null) die();
 
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 
 		$request->validate([
-		    'neko_name' => 'nullable|max:200',
-		    'tell' => 'nullable|max:20',
-		    'address' => 'nullable|max:200',
-		    'note' => 'nullable|max:2000',
-		    
+		   // CBBXS-3031
+			'id' => 'nullable|numeric',
+			'neko_val' => 'nullable|numeric',
+	        'neko_name' => 'nullable|max:255',
+			'neko_date' => 'nullable|date',
+	        'img_fn' => 'nullable|max:256',
+			'sort_no' => 'nullable|numeric',
+			'update_user_id' => 'nullable|numeric',
+	        'ip_addr' => 'nullable|max:40',
+
+			// CBBXE
 		]);
 		
-		$neko = Neko::find($request->id);
+		$model = Neko::find($request->id);
 
-		$neko->id = $request->id;
-		$neko->neko_name = $request->neko_name;
-		$neko->tell = $request->tell;
-		$neko->address = $request->address;
-		$neko->note = $request->note;
-		$neko->sort_no = $neko->nextSortNo();
-		$neko->delete_flg = 0;
-		$neko->update_user_id = $userInfo['id'];
-		$neko->ip_addr = $userInfo['ip_addr'];
+		$model->id = $request->id;
 		
- 		$neko->update();
+		// CBBXS-3033
+		$model->neko_val = $request->neko_val; // neko_val
+		$model->neko_name = $request->neko_name; // neko_name
+		$model->neko_date = $request->neko_date; // neko_date
+		$model->neko_type = $request->neko_type; // 猫種別
+		$model->neko_dt = $request->neko_dt; // neko_dt
+		$model->neko_flg = $request->neko_flg; // ネコフラグ
+		$model->img_fn = $request->img_fn; // 画像ファイル名
+		$model->note = $request->note; // 備考
+
+		// CBBXE
+		
+		$model->sort_no = $model->nextSortNo();
+		$model->delete_flg = 0;
+		$model->update_user_id = $userInfo['id'];
+		$model->ip_addr = $userInfo['ip_addr'];
+		
+ 		$model->update();
 		
 		return redirect('/neko');
 		
@@ -255,35 +284,35 @@ class NekoController extends BaseXController{
 	 * 削除/削除取消アクション(無効/有効アクション）
 	 */
 	public function disabled(){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
-	    
-	    $userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
-	    
-	    $json=$_POST['key1'];
-	    
-	    $param = json_decode($json,true);//JSON文字を配列に戻す
-	    $id = $param['id'];
-	    $action_flg =  $param['action_flg'];
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
+		
+		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
+		
+		$json=$_POST['key1'];
+		
+		$param = json_decode($json,true);//JSON文字を配列に戻す
+		$id = $param['id'];
+		$action_flg =  $param['action_flg'];
 
-	    $neko = Neko::find($id);
-	    
-	    if(empty($action_flg)){
-	        $neko->delete_flg = 0; // 削除フラグをOFFにする
-	    }else{
-	        $neko->delete_flg = 1; // 削除フラグをONにする
-	    }
-	    
-	    $neko->update_user_id = $userInfo['id'];
-	    $neko->ip_addr = $userInfo['ip_addr'];
-	    
-	    $neko->update();
-	    
-	    $res = ['success'];
-	    $json_str = json_encode($res);//JSONに変換
-	    
-	    return $json_str;
+		$model = Neko::find($id);
+		
+		if(empty($action_flg)){
+			$model->delete_flg = 0; // 削除フラグをOFFにする
+		}else{
+			$model->delete_flg = 1; // 削除フラグをONにする
+		}
+		
+		$model->update_user_id = $userInfo['id'];
+		$model->ip_addr = $userInfo['ip_addr'];
+		
+		$model->update();
+		
+		$res = ['success'];
+		$json_str = json_encode($res);//JSONに変換
+		
+		return $json_str;
 	}
 	
 	
@@ -291,24 +320,24 @@ class NekoController extends BaseXController{
 	 * 抹消アクション(無効/有効アクション）
 	 */
 	public function destroy(){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
-	    
-	    $userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
-	    
-	    $json=$_POST['key1'];
-	    
-	    $param = json_decode($json,true);//JSON文字を配列に戻す
-	    $id = $param['id'];
-	    
-	    $neko = new Neko();
-	    $neko->destroy($id);// idを指定して抹消（データベースかDELETE）
-	    
-	    $res = ['success'];
-	    $json_str = json_encode($res);//JSONに変換
-	    
-	    return $json_str;
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
+		
+		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
+		
+		$json=$_POST['key1'];
+		
+		$param = json_decode($json,true);//JSON文字を配列に戻す
+		$id = $param['id'];
+		
+		$model = new Neko();
+		$model->destroy($id);// idを指定して抹消（データベースかDELETE）
+		
+		$res = ['success'];
+		$json_str = json_encode($res);//JSONに変換
+		
+		return $json_str;
 	}
 	
 	
@@ -320,16 +349,16 @@ class NekoController extends BaseXController{
 	 *
 	 */
 	public function auto_save(){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) die;
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) die;
 
 		$json=$_POST['key1'];
 		
 		$data = json_decode($json,true);//JSON文字を配列に戻す
 		
-		$neko = new Neko();
-		$neko->saveAll($data);
+		$model = new Neko();
+		$model->saveAll($data);
 
 		$res = ['success'];
 		$json_str = json_encode($res);//JSONに変換
@@ -344,9 +373,9 @@ class NekoController extends BaseXController{
 	 * 一覧画面のCSVダウンロードボタンを押したとき、一覧データをCSVファイルとしてダウンロードします。
 	 */
 	public function csv_download(){
-	    
-	    // ログアウトになっていたらログイン画面にリダイレクト
-	    if(\Auth::id() == null) return redirect('login');
+		
+		// ログアウトになっていたらログイン画面にリダイレクト
+		if(\Auth::id() == null) return redirect('login');
 
 		$searches = session('neko_searches_key');// セッションからセッション検索データを受け取る
 
@@ -356,7 +385,7 @@ class NekoController extends BaseXController{
 		// データ件数が0件ならCSVダウンロードを中断し、一覧画面にリダイレクトする。
 		$count = count($data);
 		if($count == 0){
-		    return redirect('/neko');
+			return redirect('/neko');
 		}
 		
 		// ダブルクォートで値を囲む
