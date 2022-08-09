@@ -48,9 +48,9 @@ class ClientController extends BaseXController{
 				'address' => $request->address, // 住所
 				'note' => $request->note, // 備考
 				'delete_flg' => $request->delete_flg, // 無効フラグ
-				'update_user' => $request->update_user, // 更新者
 				// CBBXE
-				
+			    
+			    'update_user' => $request->update_user, // 更新者
 				'sort' => $request->sort, // 並びフィールド
 				'desc' => $request->desc, // 並び向き
 				'per_page' => $request->per_page, // 行制限数

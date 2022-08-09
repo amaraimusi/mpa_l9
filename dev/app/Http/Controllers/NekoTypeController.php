@@ -47,12 +47,12 @@ class NekoTypeController extends BaseXController{
 				'sort_no' => $request->sort_no, // 順番
 				'delete_flg' => $request->delete_flg, // 無効フラグ
 				'update_user_id' => $request->update_user_id, // 更新ユーザーID
-				'ip_addr' => $request->ip_addr, // IPアドレス
 				'created_at' => $request->created_at, // 生成日時
 				'updated_at' => $request->updated_at, // 更新日
 
 				// CBBXE
-				
+			    
+			    'update_user' => $request->update_user, // 更新者
 				'sort' => $request->sort, // 並びフィールド
 				'desc' => $request->desc, // 並び向き
 				'per_page' => $request->per_page, // 行制限数
