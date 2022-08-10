@@ -61,11 +61,9 @@ $ver_str = '?v=' . $this_page_version;
 			<input type="search" placeholder="ID" name="id" value="{{ old('id', $searches['id']) }}" class="form-control search_btn_x">
 			
 			<!-- CBBXS-3004 -->
-			<input type="search" placeholder="neko_type_name" name="neko_type_name" value="{{ old('neko_type_name', $searches['neko_type_name']) }}" class="form-control search_btn_x">
+			<input type="search" placeholder="ネコ種別" name="neko_type_name" value="{{ old('neko_type_name', $searches['neko_type_name']) }}" class="form-control search_btn_x">
 			<input type="search" placeholder="順番" name="sort_no" value="{{ old('sort_no', $searches['sort_no']) }}" class="form-control search_btn_x">
 			<input type="search" placeholder="IPアドレス" name="ip_addr" value="{{ old('ip_addr', $searches['ip_addr']) }}" class="form-control search_btn_x">
-			<input type="search" placeholder="生成日時" name="created_at" value="{{ old('created_at', $searches['created_at']) }}" class="form-control search_btn_x">
-			<input type="search" placeholder="更新日" name="updated_at" value="{{ old('updated_at', $searches['updated_at']) }}" class="form-control search_btn_x">
 
 			<!-- CBBXE -->
 			
@@ -115,7 +113,7 @@ $ver_str = '?v=' . $this_page_version;
 		<tr>
 			<!-- CBBXS-3035 -->
 			<th>{!! BaseXHelper::sortLink($searches, 'neko_type', 'id', 'id') !!}</th>
-			<th>{!! BaseXHelper::sortLink($searches, 'neko_type', 'neko_type_name', 'neko_type_name') !!}</th>
+			<th>{!! BaseXHelper::sortLink($searches, 'neko_type', 'neko_type_name', 'ネコ種別') !!}</th>
 			<th>{!! BaseXHelper::sortLink($searches, 'neko_type', 'sort_no', '順番') !!}</th>
 			<th>{!! BaseXHelper::sortLink($searches, 'neko_type', 'delete_flg', '無効フラグ') !!}</th>
 			<th>{!! BaseXHelper::sortLink($searches, 'neko_type', 'update_user_id', '更新ユーザーID') !!}</th>

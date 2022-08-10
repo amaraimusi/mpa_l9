@@ -239,7 +239,6 @@ class ClientController extends BaseXController{
 		$model->note = $request->note;
 		// CBBXE
 		
-		$model->sort_no = $model->nextSortNo();
 		$model->delete_flg = 0;
 		$model->update_user_id = $userInfo['id'];
 		$model->ip_addr = $userInfo['ip_addr'];

@@ -10,7 +10,7 @@ use App\Models\UserMng;
 class UserMngController extends BaseXController{
 	
 	// 画面のバージョン → 開発者はこの画面を修正したらバージョンを変更すること。バージョンを変更するとキャッシュやセッションのクリアが自動的に行われます。
-	public $this_page_version = '1.0.1';
+	public $this_page_version = '1.0.2';
 	
 
 	/**
@@ -264,7 +264,6 @@ class UserMngController extends BaseXController{
 		if(!empty($request->password)){
 			$user_mng->password = \Hash::make($request->password); // パスワードをハッシュ化する。
 		}
-		$user_mng->sort_no = $user_mng->nextSortNo();
 		$user_mng->delete_flg = 0;
 		$user_mng->update_user_id = $userInfo['id'];
 		$user_mng->ip_addr = $userInfo['ip_addr'];
@@ -365,58 +364,6 @@ class UserMngController extends BaseXController{
 		return $json_str;
 	}
 	
-	
-	/**
-	 * CSVダウンロード
-	 *
-	 * 一覧画面のCSVダウンロードボタンを押したとき、一覧データをCSVファイルとしてダウンロードします。
-	 */
-	public function csv_download(){
-		
-		// ログアウトになっていたらログイン画面にリダイレクト
-		if(\Auth::id() == null) return redirect('login');
-
-		$searches = session('user_mng_searches_key');// セッションからセッション検索データを受け取る
-
-		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
-		$roleList = $this->getRoleList($userInfo); // 権限リストを取得する
-		$model = new UserMng();
-		$data = $model->getData($searches, $roleList, 'csv');
-		
-		// データ件数が0件ならCSVダウンロードを中断し、一覧画面にリダイレクトする。
-		$count = count($data);
-		if($count == 0){
-			return redirect('/user_mng');
-		}
-		
-		// ダブルクォートで値を囲む
-		foreach($data as &$ent){
-			foreach($ent as $field => $value){
-				if(mb_strpos($value,'"')!==false){
-					$value = str_replace('"', '""', $value);
-				}
-				$value = '"' . $value . '"';
-				$ent[$field] = $value;
-			}
-		}
-		unset($ent);
-		
-		//列名配列を取得
-		$clms=array_keys($data[0]);
-		
-		//データの先頭行に列名配列を挿入
-		array_unshift($data,$clms);
-		
-		//CSVファイル名を作成
-		$date = new \DateTime();
-		$strDate=$date->format("Y-m-d");
-		$fn='user_mng'.$strDate.'.csv';
-		
-		//CSVダウンロード
-		$this->csvOutput($fn, $data);
-
-	}
-	
 	/**
 	 * バリデーションの「attribute」を設定する。
 	 * 
@@ -473,6 +420,72 @@ class UserMngController extends BaseXController{
 	        return false;
 	    }
 	    return true;
+	}
+	
+	
+	/**
+	 * CSVダウンロード
+	 *
+	 * 一覧画面のCSVダウンロードボタンを押したとき、一覧データをCSVファイルとしてダウンロードします。
+	 */
+	public function csv_download(Request $request){
+	    
+	    // ログアウトになっていたらログイン画面にリダイレクト
+	    if(\Auth::id() == null) return redirect('login');
+	    $userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
+	    
+	    $str_code = $request->str_code; // 文字コード種別を取得する
+	    
+	    $searches = session('user_mng_searches_key');// セッションからセッション検索データを受け取る
+	    
+	    $model = new UserMng();
+	    $roleList = $this->getRoleList($userInfo); // 権限リストを取得する
+	    $data = $model->getData($searches, $roleList, 'csv');
+	    
+	    // データ件数が0件ならCSVダウンロードを中断し、一覧画面にリダイレクトする。
+	    $count = count($data);
+	    if($count == 0){
+	        return redirect('/user_mng');
+	    }
+	    
+	    // ダブルクォートで値を囲む
+	    foreach($data as &$ent){
+	        foreach($ent as $field => $value){
+	            if(mb_strpos($value,'"')!==false){
+	                $value = str_replace('"', '""', $value);
+	            }
+	            $value = '"' . $value . '"';
+	            $ent[$field] = $value;
+	        }
+	    }
+	    unset($ent);
+	    
+	    //列名配列を取得
+	    $clms=array_keys($data[0]);
+	    
+	    //データの先頭行に列名配列を挿入
+	    array_unshift($data,$clms);
+	    
+	    //CSVファイル名を作成
+	    $date = new \DateTime();
+	    $strDate=$date->format("Y-m-d");
+	    
+	    if(empty($str_code)){
+	        
+	        //CSVダウンロード
+	        $fn='user_mng'.$strDate.'.csv';
+	        $this->csvOutput($fn, $data);
+	        
+	    }elseif($str_code == 'shiftjis'){
+	        
+	        // Shift-Jis版CSVダウンロード
+	        $fn='user_mng_sj'.$strDate.'.csv';
+	        $this->csvOutputForShiftJis($fn, $data);
+	        
+	    }else{
+	        echo 'ERROR 22072612';
+	        die;
+	    }
 	}
 	
 	

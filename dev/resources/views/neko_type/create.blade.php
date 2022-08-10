@@ -28,7 +28,7 @@ $ver_str = '?v=' . $this_page_version;
 <div id="app"><!-- vue.jsの場所・未使用 --></div>
 
 <div class="d-flex flex-row m-1 m-sm-4 px-sm-5 px-1">
-@include('layouts.side')
+
 <main class="flex-fill mx-sm-2 px-sm-5 mx-1 px-1 w-100">
 
 <nav aria-label="breadcrumb">
@@ -56,27 +56,9 @@ $ver_str = '?v=' . $this_page_version;
 			@csrf
 			<!-- CBBXS-3006 -->
 			<div class="row">
-				<label for="neko_type_name" class="col-12 col-md-5 col-form-label">neko_type_name</label>
+				<label for="neko_type_name" class="col-12 col-md-5 col-form-label">ネコ種別</label>
 				<div class="col-12 col-md-7">
-					<input name="neko_type_name" type="text"  class="form-control form-control-lg" placeholder="neko_type_name" value="{{old('neko_type_name')}}">
-				</div>
-			</div>
-			<div class="row">
-				<label for="sort_no" class="col-12 col-md-5 col-form-label">順番</label>
-				<div class="col-12 col-md-7">
-					<input name="sort_no" type="text"  class="form-control form-control-lg" placeholder="順番" value="{{old('sort_no')}}">
-				</div>
-			</div>
-			<div class="row">
-				<label for="created_at" class="col-12 col-md-5 col-form-label">生成日時</label>
-				<div class="col-12 col-md-7">
-					<input name="created_at" type="text"  class="form-control form-control-lg" placeholder="生成日時" value="{{old('created_at')}}">
-				</div>
-			</div>
-			<div class="row">
-				<label for="updated_at" class="col-12 col-md-5 col-form-label">更新日</label>
-				<div class="col-12 col-md-7">
-					<input name="updated_at" type="text"  class="form-control form-control-lg" placeholder="更新日" value="{{old('updated_at')}}">
+					<input name="neko_type_name" type="text"  class="form-control form-control-lg" placeholder="ネコ種別" value="{{old('neko_type_name')}}">
 				</div>
 			</div>
 

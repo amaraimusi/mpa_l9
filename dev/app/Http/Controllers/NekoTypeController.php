@@ -10,7 +10,7 @@ use App\Models\NekoType;
 class NekoTypeController extends BaseXController{
 	
 	// 画面のバージョン → 開発者はこの画面を修正したらバージョンを変更すること。バージョンを変更するとキャッシュやセッションのクリアが自動的に行われます。
-	public $this_page_version = '1.0.1';
+	public $this_page_version = '1.0.0';
 	
 	/**
 	 * indexページのアクション
@@ -43,10 +43,11 @@ class NekoTypeController extends BaseXController{
 				
 				// CBBXS-3000
 				'id' => $request->id, // id
-				'neko_type_name' => $request->neko_type_name, // neko_type_name
+				'neko_type_name' => $request->neko_type_name, // ネコ種別
 				'sort_no' => $request->sort_no, // 順番
 				'delete_flg' => $request->delete_flg, // 無効フラグ
 				'update_user_id' => $request->update_user_id, // 更新ユーザーID
+				'ip_addr' => $request->ip_addr, // IPアドレス
 				'created_at' => $request->created_at, // 生成日時
 				'updated_at' => $request->updated_at, // 更新日
 
@@ -129,9 +130,7 @@ class NekoTypeController extends BaseXController{
 		
 		$model = new NekoType();
 		// CBBXS-3032
-		$model->neko_type_name = $request->neko_type_name; // neko_type_name
-		$model->created_at = $request->created_at; // 生成日時
-		$model->updated_at = $request->updated_at; // 更新日
+		$model->neko_type_name = $request->neko_type_name; // ネコ種別
 
 		// CBBXE
 		
@@ -239,9 +238,7 @@ class NekoTypeController extends BaseXController{
 		$model->id = $request->id;
 		
 		// CBBXS-3033
-		$model->neko_type_name = $request->neko_type_name; // neko_type_name
-		$model->created_at = $request->created_at; // 生成日時
-		$model->updated_at = $request->updated_at; // 更新日
+		$model->neko_type_name = $request->neko_type_name; // ネコ種別
 
 		// CBBXE
 		

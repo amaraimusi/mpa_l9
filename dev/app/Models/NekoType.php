@@ -119,7 +119,7 @@ class NekoType extends BaseX
 	        $query = $query->where('neko_types.id',$searches['id']);
 	    }
 
-	    // neko_type_name
+	    // ネコ種別
 	    if(!empty($searches['neko_type_name'])){
 	        $query = $query->where('neko_types.neko_type_name', 'LIKE', "%{$searches['neko_type_name']}%");
 	    }
