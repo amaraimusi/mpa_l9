@@ -60,6 +60,7 @@ class NekoController extends BaseXController{
 
 				// CBBXE
 				
+				'update_user' => $request->update_user, // 更新者
 				'sort' => $request->sort, // 並びフィールド
 				'desc' => $request->desc, // 並び向き
 				'per_page' => $request->per_page, // 行制限数
@@ -78,12 +79,17 @@ class NekoController extends BaseXController{
 		
 		$model = new Neko();
 		$data = $model->getData($searches);
+		
+		$nekoTypeList = $model->getNekoTypeList(); // ネコ種別リスト
 
-	   return view('neko.index', [
-			'data'=>$data,
-			'searches'=>$searches,
-			'userInfo'=>$userInfo,
-			'this_page_version'=>$this->this_page_version,
+		return view('neko.index', [
+		    'data'=>$data,
+		    'searches'=>$searches,
+		    'userInfo'=>$userInfo,
+		    'this_page_version'=>$this->this_page_version,
+		    
+		    // 
+		    'nekoTypeList'=>$nekoTypeList,
 	   ]);
 		
 	}
@@ -125,12 +131,12 @@ class NekoController extends BaseXController{
 			// CBBXS-3030
 			'id' => 'nullable|numeric',
 			'neko_val' => 'nullable|numeric',
-	        'neko_name' => 'nullable|max:255',
+			'neko_name' => 'nullable|max:255',
 			'neko_date' => 'nullable|date',
-	        'img_fn' => 'nullable|max:256',
+			'img_fn' => 'nullable|max:256',
 			'sort_no' => 'nullable|numeric',
 			'update_user_id' => 'nullable|numeric',
-	        'ip_addr' => 'nullable|max:40',
+			'ip_addr' => 'nullable|max:40',
 
 			// CBBXE
 		]);
@@ -147,8 +153,6 @@ class NekoController extends BaseXController{
 		$model->neko_flg = $request->neko_flg; // ネコフラグ
 		$model->img_fn = $request->img_fn; // 画像ファイル名
 		$model->note = $request->note; // 備考
-		$model->created_at = $request->created_at; // 生成日時
-		$model->updated_at = $request->updated_at; // 更新日
 
 		// CBBXE
 		
@@ -244,12 +248,12 @@ class NekoController extends BaseXController{
 		   // CBBXS-3031
 			'id' => 'nullable|numeric',
 			'neko_val' => 'nullable|numeric',
-	        'neko_name' => 'nullable|max:255',
+			'neko_name' => 'nullable|max:255',
 			'neko_date' => 'nullable|date',
-	        'img_fn' => 'nullable|max:256',
+			'img_fn' => 'nullable|max:256',
 			'sort_no' => 'nullable|numeric',
 			'update_user_id' => 'nullable|numeric',
-	        'ip_addr' => 'nullable|max:40',
+			'ip_addr' => 'nullable|max:40',
 
 			// CBBXE
 		]);
@@ -267,12 +271,9 @@ class NekoController extends BaseXController{
 		$model->neko_flg = $request->neko_flg; // ネコフラグ
 		$model->img_fn = $request->img_fn; // 画像ファイル名
 		$model->note = $request->note; // 備考
-		$model->created_at = $request->created_at; // 生成日時
-		$model->updated_at = $request->updated_at; // 更新日
 
 		// CBBXE
 		
-		$model->sort_no = $model->nextSortNo();
 		$model->delete_flg = 0;
 		$model->update_user_id = $userInfo['id'];
 		$model->ip_addr = $userInfo['ip_addr'];

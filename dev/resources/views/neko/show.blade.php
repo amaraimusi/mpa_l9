@@ -28,7 +28,6 @@ $ver_str = '?v=' . $this_page_version;
 <div id="app"><!-- vue.jsの場所・未使用 --></div>
 
 <div class="d-flex flex-row m-1 m-sm-4 px-sm-5 px-1">
-@include('layouts.side')
 <main class="flex-fill mx-sm-2 px-sm-5 mx-1 px-1 w-100">
 
 <nav aria-label="breadcrumb">
@@ -95,18 +94,6 @@ $ver_str = '?v=' . $this_page_version;
 				<div class="col-12 col-md-7">
 					<div style="white-space:pre-wrap; word-wrap:break-word;">{{ $ent->note }}</div>
 				</div>
-			</div>
-			<div class="row">
-				<label for="sort_no" class="col-12 col-md-5 col-form-label">順番</label>
-				<div class="col-12 col-md-7">{{ $ent-> sort_no}}</div>
-			</div>
-			<div class="row">
-				<label for="created_at" class="col-12 col-md-5 col-form-label">生成日時</label>
-				<div class="col-12 col-md-7">{{ $ent-> created_at}}</div>
-			</div>
-			<div class="row">
-				<label for="updated_at" class="col-12 col-md-5 col-form-label">更新日</label>
-				<div class="col-12 col-md-7">{{ $ent-> updated_at}}</div>
 			</div>
 
 			<!-- CBBXE -->

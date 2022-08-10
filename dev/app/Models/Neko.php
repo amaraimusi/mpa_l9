@@ -72,7 +72,8 @@ class Neko extends BaseX
 			'nekos.note as note',
 			'nekos.sort_no as sort_no',
 			'nekos.delete_flg as delete_flg',
-			'users.nickname as update_user',
+		    'nekos.update_user_id as update_user_id',
+		    'users.nickname as update_user',
 			'nekos.ip_addr as ip_addr',
 			'nekos.created_at as created_at',
 			'nekos.updated_at as updated_at',
@@ -267,6 +268,25 @@ class Neko extends BaseX
 		return $data2;
 	}
 	
+	
+	/**
+	 *  ネコ種別リストを取得する
+	 *  @return [] ネコ種別リスト
+	 */
+	public function getNekoTypeList(){
+	    
+	    $query = DB::table('neko_types')->
+	       select(['id', 'neko_type_name'])->
+	       where('delete_flg',0);
+	    
+	    $res = $query->get();
+	    $list = [];
+	    foreach($res as $ent){
+	        $list[$ent->id] = $ent->neko_type_name;
+	    }
+
+	    return $list;
+	}
 	
 }
 

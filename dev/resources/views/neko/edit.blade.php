@@ -28,7 +28,6 @@ $ver_str = '?v=' . $this_page_version;
 <div id="app"><!-- vue.jsの場所・未使用 --></div>
 
 <div class="d-flex flex-row m-1 m-sm-4 px-sm-5 px-1">
-@include('layouts.side')
 <main class="flex-fill mx-sm-2 px-sm-5 mx-1 px-1 w-100">
 
 <nav aria-label="breadcrumb">
@@ -61,27 +60,27 @@ $ver_str = '?v=' . $this_page_version;
 			<div class="row">
 				<label for="neko_val" class="col-12 col-md-5 col-form-label">neko_val</label>
 				<div class="col-12 col-md-7">
-					<input name="neko_val" type="text"  class="form-control form-control-lg" placeholder="neko_val" value="{{old('neko_val')}}">
+					<input name="neko_val" type="text"  class="form-control form-control-lg" placeholder="neko_val" value="{{old('neko_val', $ent->neko_val)}}">
 				</div>
 			</div>
 			<div class="row">
 				<label for="neko_name" class="col-12 col-md-5 col-form-label">neko_name</label>
 				<div class="col-12 col-md-7">
-					<input name="neko_name" type="text"  class="form-control form-control-lg" placeholder="neko_name" value="{{old('neko_name')}}">
+					<input name="neko_name" type="text"  class="form-control form-control-lg" placeholder="neko_name" value="{{old('neko_name', $ent->neko_name)}}">
 				</div>
 			</div>
 			<div class="row">
 				<label for="neko_date" class="col-12 col-md-5 col-form-label">neko_date</label>
 				<div class="col-12 col-md-7">
-					<input name="neko_date" type="text"  class="form-control form-control-lg" placeholder="neko_date" value="{{old('neko_date')}}">
+					<input name="neko_date" type="text"  class="form-control form-control-lg" placeholder="neko_date" value="{{old('neko_date', $ent->neko_date)}}">
 				</div>
 			</div>
 			<div class="row">
 				<label for="neko_type" class="col-12 col-md-5 col-form-label">猫種別</label>
 				<div class="col-12 col-md-7">
 					<select name="neko_type" class="form-control form-control-lg">
-						@foreach (nekoTypeList as $neko_type => $neko_type_name)
-							<option value="{{ $neko_type }}" @selected(old('neko_type') == $neko_type)>
+						@foreach ($field_lccList as $neko_type => $neko_type_name)
+							<option value="{{ $neko_type }}" @selected(old('neko_type', $ent->neko_type) == $neko_type)>
 								{{ $neko_type_name }}
 							</option>
 						@endforeach
@@ -91,43 +90,25 @@ $ver_str = '?v=' . $this_page_version;
 			<div class="row">
 				<label for="neko_dt" class="col-12 col-md-5 col-form-label">neko_dt</label>
 				<div class="col-12 col-md-7">
-					<input name="neko_dt" type="text"  class="form-control form-control-lg" placeholder="neko_dt" value="{{old('neko_dt')}}">
+					<input name="neko_dt" type="text"  class="form-control form-control-lg" placeholder="neko_dt" value="{{old('neko_dt', $ent->neko_dt)}}">
 				</div>
 			</div>
 			<div class="row">
 				<label for="neko_flg" class="col-12 col-md-5 col-form-label">ネコフラグ</label>
 				<div class="col-12 col-md-7">
-					<input name="neko_flg" type="text"  class="form-control form-control-lg" placeholder="ネコフラグ" value="{{old('neko_flg')}}">
+					<input name="neko_flg" type="text"  class="form-control form-control-lg" placeholder="ネコフラグ" value="{{old('neko_flg', $ent->neko_flg)}}">
 				</div>
 			</div>
 			<div class="row">
 				<label for="img_fn" class="col-12 col-md-5 col-form-label">画像ファイル名</label>
 				<div class="col-12 col-md-7">
-					<input name="img_fn" type="text"  class="form-control form-control-lg" placeholder="画像ファイル名" value="{{old('img_fn')}}">
+					<input name="img_fn" type="text"  class="form-control form-control-lg" placeholder="画像ファイル名" value="{{old('img_fn', $ent->img_fn)}}">
 				</div>
 			</div>
 			<div class="row">
 				<label for="note" class="col-12 col-md-5 col-form-label">備考</label>
 				<div class="col-12 col-md-7">
-					<textarea name="note" id="note" class="form-control form-control-lg" placeholder="備考"  maxlength="2000">{{old('note')}}</textarea>
-				</div>
-			</div>
-			<div class="row">
-				<label for="sort_no" class="col-12 col-md-5 col-form-label">順番</label>
-				<div class="col-12 col-md-7">
-					<input name="sort_no" type="text"  class="form-control form-control-lg" placeholder="順番" value="{{old('sort_no')}}">
-				</div>
-			</div>
-			<div class="row">
-				<label for="created_at" class="col-12 col-md-5 col-form-label">生成日時</label>
-				<div class="col-12 col-md-7">
-					<input name="created_at" type="text"  class="form-control form-control-lg" placeholder="生成日時" value="{{old('created_at')}}">
-				</div>
-			</div>
-			<div class="row">
-				<label for="updated_at" class="col-12 col-md-5 col-form-label">更新日</label>
-				<div class="col-12 col-md-7">
-					<input name="updated_at" type="text"  class="form-control form-control-lg" placeholder="更新日" value="{{old('updated_at')}}">
+					<textarea name="note" id="note" class="form-control form-control-lg" placeholder="備考"  maxlength="2000">{{old('note', $ent->note)}}</textarea>
 				</div>
 			</div>
 
