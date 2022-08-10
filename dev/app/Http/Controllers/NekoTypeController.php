@@ -10,7 +10,7 @@ use App\Models\NekoType;
 class NekoTypeController extends BaseXController{
 	
 	// 画面のバージョン → 開発者はこの画面を修正したらバージョンを変更すること。バージョンを変更するとキャッシュやセッションのクリアが自動的に行われます。
-	public $this_page_version = '1.0.0';
+	public $this_page_version = '1.0.1';
 	
 	/**
 	 * indexページのアクション
@@ -242,7 +242,6 @@ class NekoTypeController extends BaseXController{
 
 		// CBBXE
 		
-		$model->sort_no = $model->nextSortNo();
 		$model->delete_flg = 0;
 		$model->update_user_id = $userInfo['id'];
 		$model->ip_addr = $userInfo['ip_addr'];

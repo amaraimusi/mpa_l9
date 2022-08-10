@@ -65,10 +65,6 @@ $ver_str = '?v=' . $this_page_version;
 				<label for="neko_type_name" class="col-12 col-md-5 col-form-label">ネコ種別</label>
 				<div class="col-12 col-md-7">{{ $ent-> neko_type_name}}</div>
 			</div>
-			<div class="row">
-				<label for="sort_no" class="col-12 col-md-5 col-form-label">順番</label>
-				<div class="col-12 col-md-7">{{ $ent-> sort_no}}</div>
-			</div>
 
 			<!-- CBBXE -->
 

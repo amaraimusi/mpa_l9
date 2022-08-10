@@ -51,13 +51,13 @@ function initClmShowHide(){
 	let iniClmData = [
 		// CBBXS-3036
 		-1, // ID
-		1, // neko_type_name
+		1, // ネコ種別
 		0, // 順番
 		0, // 無効フラグ
 		0, // 更新ユーザーID
 		0, // IPアドレス
-		1, // 生成日時
-		1, // 更新日
+		0, // 生成日時
+		0, // 更新日
 
 		// CBBXE
 		-1 // ボタン列
