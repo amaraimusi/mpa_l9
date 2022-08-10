@@ -78,8 +78,6 @@ $ver_str = '?v=' . $this_page_version;
 			<input type="search" placeholder="備考" name="note" value="{{ old('note', $searches['note']) }}" class="form-control search_btn_x">
 			<input type="search" placeholder="順番" name="sort_no" value="{{ old('sort_no', $searches['sort_no']) }}" class="form-control search_btn_x">
 			<input type="search" placeholder="IPアドレス" name="ip_addr" value="{{ old('ip_addr', $searches['ip_addr']) }}" class="form-control search_btn_x">
-			<input type="search" placeholder="生成日時" name="created_at" value="{{ old('created_at', $searches['created_at']) }}" class="form-control search_btn_x">
-			<input type="search" placeholder="更新日" name="updated_at" value="{{ old('updated_at', $searches['updated_at']) }}" class="form-control search_btn_x">
 
 			<!-- CBBXE -->
 			
