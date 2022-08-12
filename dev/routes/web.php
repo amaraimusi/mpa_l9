@@ -70,6 +70,18 @@ Route::post('neko_type/disabled', 'App\Http\Controllers\NekoTypeController@disab
 Route::post('neko_type/destroy', 'App\Http\Controllers\NekoTypeController@destroy');
 Route::get('neko_type/csv_download', 'App\Http\Controllers\NekoTypeController@csv_download');
 
+// 子犬管理画面
+Route::get('small_dog', 'App\Http\Controllers\SmallDogController@index');
+Route::get('small_dog/create', 'App\Http\Controllers\SmallDogController@create');
+Route::post('small_dog/store', 'App\Http\Controllers\SmallDogController@store');
+Route::get('small_dog/show', 'App\Http\Controllers\SmallDogController@show');
+Route::get('small_dog/edit', 'App\Http\Controllers\SmallDogController@edit');
+Route::post('small_dog/update', 'App\Http\Controllers\SmallDogController@update');
+Route::post('small_dog/auto_save', 'App\Http\Controllers\SmallDogController@auto_save');
+Route::post('small_dog/disabled', 'App\Http\Controllers\SmallDogController@disabled');
+Route::post('small_dog/destroy', 'App\Http\Controllers\SmallDogController@destroy');
+Route::get('small_dog/csv_download', 'App\Http\Controllers\SmallDogController@csv_download');
+
 
 // ユーザー管理画面
 Route::get('user_mng', 'App\Http\Controllers\UserMngController@index');

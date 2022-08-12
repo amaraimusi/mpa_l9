@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\BaseX;
 
-class Neko extends BaseX
+class SmallDog extends BaseX
 {
-	protected $table = 'nekos'; // 紐づけるテーブル名
+	protected $table = 'small_dogs'; // 紐づけるテーブル名
 	
 	const CREATED_AT = 'created_at';
 	const UPDATED_AT = 'updated_at';
@@ -23,11 +23,11 @@ class Neko extends BaseX
 	protected $fillable = [
 		// CBBXS-3009
 		'id',
-		'neko_val',
-		'neko_name',
-		'neko_date',
-		'neko_type',
-		'neko_dt',
+		'dog_val',
+		'small_dog_name',
+		'small_dog_date',
+		'dog_type',
+		'dog_dt',
 		'neko_flg',
 		'img_fn',
 		'note',
@@ -56,34 +56,34 @@ class Neko extends BaseX
 	public function getData($searches, $use_type='index'){
 		
 		// 一覧データを取得するSQLの組立。
-		$query = DB::table('nekos')->
-			leftJoin('users', 'nekos.update_user_id', '=', 'users.id');
+		$query = DB::table('small_dogs')->
+			leftJoin('users', 'small_dogs.update_user_id', '=', 'users.id');
 		
 		$query = $query->select(
 		    // CBBXS-3034
-			'nekos.id as id',
-			'nekos.neko_val as neko_val',
-			'nekos.neko_name as neko_name',
-			'nekos.neko_date as neko_date',
-			'nekos.neko_type as neko_type',
-			'nekos.neko_dt as neko_dt',
-			'nekos.neko_flg as neko_flg',
-			'nekos.img_fn as img_fn',
-			'nekos.note as note',
-			'nekos.sort_no as sort_no',
-			'nekos.delete_flg as delete_flg',
-		    'nekos.update_user_id as update_user_id',
+			'small_dogs.id as id',
+			'small_dogs.dog_val as dog_val',
+			'small_dogs.small_dog_name as small_dog_name',
+			'small_dogs.small_dog_date as small_dog_date',
+			'small_dogs.dog_type as dog_type',
+			'small_dogs.dog_dt as dog_dt',
+			'small_dogs.neko_flg as neko_flg',
+			'small_dogs.img_fn as img_fn',
+			'small_dogs.note as note',
+			'small_dogs.sort_no as sort_no',
+			'small_dogs.delete_flg as delete_flg',
+		    'small_dogs.update_user_id as update_user_id',
 		    'users.nickname as update_user',
-			'nekos.ip_addr as ip_addr',
-			'nekos.created_at as created_at',
-			'nekos.updated_at as updated_at',
+			'small_dogs.ip_addr as ip_addr',
+			'small_dogs.created_at as created_at',
+			'small_dogs.updated_at as updated_at',
 
 		    // CBBXE
 			);
 		
 		// メイン検索
 		if(!empty($searches['main_search'])){
-			$concat = DB::raw("CONCAT( IFNULL(nekos.neko_name, '') ,IFNULL(nekos.tell, '') ,IFNULL(nekos.address, '') ,IFNULL(nekos.note, '') ) ");
+			$concat = DB::raw("CONCAT( IFNULL(small_dogs.small_dog_name, '') ,IFNULL(small_dogs.tell, '') ,IFNULL(small_dogs.address, '') ,IFNULL(small_dogs.note, '') ) ");
 			$query = $query->where($concat, 'LIKE', "%{$searches['main_search']}%");
 		}
 		
@@ -130,61 +130,61 @@ class Neko extends BaseX
 
 	    // id
 	    if(!empty($searches['id'])){
-	        $query = $query->where('nekos.id',$searches['id']);
+	        $query = $query->where('small_dogs.id',$searches['id']);
 	    }
 
-	    // neko_val
-	    if(!empty($searches['neko_val'])){
-	        $query = $query->where('nekos.neko_val',$searches['neko_val']);
+	    // イヌ数値
+	    if(!empty($searches['dog_val'])){
+	        $query = $query->where('small_dogs.dog_val',$searches['dog_val']);
 	    }
 
-	    // neko_name
-	    if(!empty($searches['neko_name'])){
-	        $query = $query->where('nekos.neko_name', 'LIKE', "%{$searches['neko_name']}%");
+	    // 子犬名
+	    if(!empty($searches['small_dog_name'])){
+	        $query = $query->where('small_dogs.small_dog_name', 'LIKE', "%{$searches['small_dog_name']}%");
 	    }
 
-	    // neko_date
-	    if(!empty($searches['neko_date'])){
-	        $query = $query->where('nekos.neko_date',$searches['neko_date']);
+	    // 子犬日付
+	    if(!empty($searches['small_dog_date'])){
+	        $query = $query->where('small_dogs.small_dog_date',$searches['small_dog_date']);
 	    }
 
-	    // 猫種別
-	    if(!empty($searches['neko_type'])){
-	        $query = $query->where('nekos.neko_type',$searches['neko_type']);
+	    // 犬種
+	    if(!empty($searches['dog_type'])){
+	        $query = $query->where('small_dogs.dog_type',$searches['dog_type']);
 	    }
 
-	    // neko_dt
-	    if(!empty($searches['neko_dt'])){
-	        $query = $query->where('nekos.neko_dt',$searches['neko_dt']);
+	    // 子犬保護日時
+	    if(!empty($searches['dog_dt'])){
+	        $query = $query->where('small_dogs.dog_dt',$searches['dog_dt']);
 	    }
 
 	    // 無効フラグ
 	    if(!empty($searches['delete_flg'])){
-	        $query = $query->where('nekos.delete_flg',$searches['delete_flg']);
+	        $query = $query->where('small_dogs.delete_flg',$searches['delete_flg']);
 	    }else{
-	        $query = $query->where('nekos.delete_flg', 0);
+	        $query = $query->where('small_dogs.delete_flg', 0);
 	    }
 
 	    // 画像ファイル名
 	    if(!empty($searches['img_fn'])){
-	        $query = $query->where('nekos.img_fn', 'LIKE', "%{$searches['img_fn']}%");
+	        $query = $query->where('small_dogs.img_fn', 'LIKE', "%{$searches['img_fn']}%");
 	    }
 
 	    // 備考
 	    if(!empty($searches['note'])){
-	        $query = $query->where('nekos.note', 'LIKE', "%{$searches['note']}%");
+	        $query = $query->where('small_dogs.note', 'LIKE', "%{$searches['note']}%");
 	    }
 
 	    // 順番
 	    if(!empty($searches['sort_no'])){
-	        $query = $query->where('nekos.sort_no',$searches['sort_no']);
+	        $query = $query->where('small_dogs.sort_no',$searches['sort_no']);
 	    }
 
 	    // 無効フラグ
 	    if(!empty($searches['delete_flg'])){
-	        $query = $query->where('nekos.delete_flg',$searches['delete_flg']);
+	        $query = $query->where('small_dogs.delete_flg',$searches['delete_flg']);
 	    }else{
-	        $query = $query->where('nekos.delete_flg', 0);
+	        $query = $query->where('small_dogs.delete_flg', 0);
 	    }
 
 	    // 更新者
@@ -194,17 +194,17 @@ class Neko extends BaseX
 
 	    // IPアドレス
 	    if(!empty($searches['ip_addr'])){
-	        $query = $query->where('nekos.ip_addr', 'LIKE', "%{$searches['ip_addr']}%");
+	        $query = $query->where('small_dogs.ip_addr', 'LIKE', "%{$searches['ip_addr']}%");
 	    }
 
 	    // 生成日時
 	    if(!empty($searches['created_at'])){
-	        $query = $query->where('nekos.created_at',$searches['created_at']);
+	        $query = $query->where('small_dogs.created_at',$searches['created_at']);
 	    }
 
 	    // 更新日
 	    if(!empty($searches['updated_at'])){
-	        $query = $query->where('nekos.updated_at',$searches['updated_at']);
+	        $query = $query->where('small_dogs.updated_at',$searches['updated_at']);
 	    }
 
 		// CBBXE
@@ -218,7 +218,7 @@ class Neko extends BaseX
 	 * @return int 順番
 	 */
 	public function nextSortNo(){
-		$query = DB::table('nekos')->selectRaw('MAX(sort_no) AS max_sort_no');
+		$query = DB::table('small_dogs')->selectRaw('MAX(sort_no) AS max_sort_no');
 		$res = $query->first();
 		$sort_no = $res->max_sort_no ?? 0;
 		$sort_no++;
@@ -270,23 +270,24 @@ class Neko extends BaseX
 	
 	// CBBXS-3021
 	/**
-	 *  ネコ種別リストを取得する
-	 *  @return [] ネコ種別リスト
+	 *  犬種種別リストを取得する
+	 *  @return [] 犬種種別リスト
 	 */
-	public function getNekoTypeList(){
+	public function getDogTypeList(){
 	    
-	    $query = DB::table('neko_types')->
-	       select(['id', 'neko_type_name'])->
+	    $query = DB::table('dog_types')->
+	       select(['id', 'dog_type_name'])->
 	       where('delete_flg',0);
 	    
 	    $res = $query->get();
 	    $list = [];
 	    foreach($res as $ent){
-	        $list[$ent->id] = $ent->neko_type_name;
+	        $list[$ent->id] = $ent->dog_type_name;
 	    }
 
 	    return $list;
 	}
+
 	// CBBXE
 	
 }
