@@ -160,7 +160,7 @@ $ver_str = '?v=' . $this_page_version;
 				<td>{{$ent->img_fn}}</td>
 				<td>{{$ent->note}}</td>
 				<td>{{$ent->sort_no}}</td>
-				<td>{{($ent->delete_flg) ? '無効': '有効' }}</td>
+				<td>{!! BaseXHelper::notationDeleteFlg($ent->delete_flg) !!}</td>
 				<td>{{$ent->update_user_id}}</td>
 				<td>{{$ent->ip_addr}}</td>
 				<td>{{$ent->created_at}}</td>

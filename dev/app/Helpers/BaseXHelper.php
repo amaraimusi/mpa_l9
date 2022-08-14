@@ -50,9 +50,9 @@ class BaseXHelper
      * @return string
      */
     public static function notationDeleteFlg($delete_flg){
-        $notation = '有効';
+        $notation = "<span class='text-success'>有効</span>";
         if(!empty($delete_flg)){
-            $notation = '無効';
+            $notation = "<span class='text-secondary'>無効</span>";
         }
         return $notation;
     }
