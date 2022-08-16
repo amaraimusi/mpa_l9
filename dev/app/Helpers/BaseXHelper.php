@@ -45,6 +45,19 @@ class BaseXHelper
     }
     
     /**
+     * フラグを「有効」、「無効」の形式で表記する
+     * @param int $flg フラグ
+     * @return string
+     */
+    public static function notationFlg($flg){
+        $notation = "<span class='text-success'>ON</span>";
+        if(!empty($flg)){
+            $notation = "<span class='text-secondary'>OFF</span>";
+        }
+        return $notation;
+    }
+    
+    /**
      * 無効フラグを「有効」、「無効」の形式で表記する
      * @param int $delete_flg 無効フラグ
      * @return string

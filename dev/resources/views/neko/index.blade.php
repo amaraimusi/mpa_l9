@@ -156,7 +156,7 @@ $ver_str = '?v=' . $this_page_version;
 				<td>{{$ent->neko_date}}</td>
 				<td>{{ $nekoTypeList[$ent->neko_type] ?? '' }}</td>
 				<td>{{$ent->neko_dt}}</td>
-				<td>{{$ent->neko_flg}}</td>
+				<td>{!! BaseXHelper::notationFlg($ent->neko_flg) !!}</td>
 				<td>{{$ent->img_fn}}</td>
 				<td>{{$ent->note}}</td>
 				<td>{{$ent->sort_no}}</td>
