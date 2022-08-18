@@ -70,7 +70,7 @@ $ver_str = '?v=' . $this_page_version;
 			<div class="row">
 				<label for="neko_date" class="col-12 col-md-5 col-form-label">neko_date</label>
 				<div class="col-12 col-md-7">
-					<input name="neko_date" type="text"  class="form-control form-control-lg" placeholder="neko_date" value="{{old('neko_date')}}">
+					<input name="neko_date" type="date"  class="form-control form-control-lg" placeholder="neko_date" value="{{old('neko_date')}}">
 				</div>
 			</div>
 			<div class="row">
