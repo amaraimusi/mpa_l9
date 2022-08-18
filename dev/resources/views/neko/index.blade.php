@@ -12,6 +12,7 @@ $ver_str = '?v=' . $this_page_version;
 	<script src="{{ asset('/js/common/clm_show_hide.js')  . $ver_str}} }}" defer></script>
 	<script src="{{ asset('/js/common/AutoSave.js')  . $ver_str}} }}" defer></script>
 	<script src="{{ asset('/js/common/RowExchange.js')  . $ver_str}} }}" defer></script>
+	<script src="{{ asset('/js/common/BaseXHelper.js')  . $ver_str}} }}" defer></script>
 	<script src="{{ asset('/js/Neko/index.js')  . $ver_str}} }}" defer></script>
 	
 	<link href="{{ asset('/css/app.css')  . $ver_str}}" rel="stylesheet">
@@ -158,7 +159,10 @@ $ver_str = '?v=' . $this_page_version;
 				<td>{{$ent->neko_dt}}</td>
 				<td>{!! BaseXHelper::notationFlg($ent->neko_flg) !!}</td>
 				<td>{{$ent->img_fn}}</td>
-				<td>{{$ent->note}}</td>
+				
+
+				<td>{!! BaseXHelper::foldableNote($ent->note, 'note', 20) !!}</td>
+				
 				<td>{{$ent->sort_no}}</td>
 				<td>{!! BaseXHelper::notationDeleteFlg($ent->delete_flg) !!}</td>
 				<td>{{$ent->update_user_id}}</td>

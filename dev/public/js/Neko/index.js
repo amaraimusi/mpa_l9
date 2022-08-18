@@ -3,10 +3,12 @@ var rowExchange; // 行入替機能
 var data; // 一覧データ
 var searches; // 検索データ
 var csrf_token; // CSRFトークン
+var baseXHelper; // 基本X
 
 var autoSave;
 $(()=>{
 	
+	baseXHelper = new BaseXHelper();
 	
 	let data_json = $('#data_json').val();
 	data = JSON.parse(data_json);
@@ -201,5 +203,11 @@ function destroyBtn(btnElm){
 }
 
 
-
+/**
+ * ノート詳細を開く
+ * @param btnElm 詳細ボタン要素
+ */
+function openNoteDetail(btnElm,field){
+	return baseXHelper.openNoteDetail(btnElm,field);
+}
 

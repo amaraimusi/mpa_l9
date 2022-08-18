@@ -72,6 +72,48 @@ class BaseXHelper
     
     
     /**
+     * 長文を折りたたみ式にする
+     * @param array $ent データのエンティティ
+     * @param string $field フィールド名
+     * @param int $strLen 表示文字数（バイト）(省略時は無制限に文字表示）
+     */
+    public static function foldableNote($v, $field,$str_len = null){
+        
+        $v2="";
+        $long_over_flg = 0; // 制限文字数オーバーフラグ
+        if(!empty($v)){
+            $v = str_replace(array('<','>'),array('&lt;','&gt;'), $v); // XSSサニタイズ
+            if($str_len === null){
+                $v2 = $v;
+            }else{
+                if(mb_strlen($v) > $str_len){
+                    $v2=mb_strimwidth($v, 0, $str_len * 2);
+                    $long_over_flg = 1;
+                }else{
+                    $v2 = $v;
+                }
+            }
+            $v2= str_replace('\\r\\n', ' ', $v2);
+            $v2= str_replace('\\', '', $v2);
+        }
+        
+        // ノート詳細開きボタンのHTMLを作成
+        $note_detail_open_html = '';
+        if($long_over_flg) {
+            $note_detail_open_html = "<input type='button' class='btn btn-secondary btn-sm note_detail_open_btn' value='...' onclick=\"openNoteDetail(this, '{$field}')\" />";
+        }
+        
+        $td = "
+			<div>
+				<input type='hidden' name='{$field}' value='{$v}' />
+				<div class='{$field}' style='white-space:pre-wrap; word-wrap:break-word;'>{$v2}</div>
+                {$note_detail_open_html}
+			</div>";
+        return $td;
+    }
+    
+    
+    /**
      * 行入替ボタンを表示する
      * @param [] $searches 検索データ
      */
