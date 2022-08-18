@@ -154,17 +154,14 @@ $ver_str = '?v=' . $this_page_version;
 				<td>{{$ent->id}}</td>
 				<td>{{$ent->neko_val}}</td>
 				<td>{{$ent->neko_name}}</td>
-				<td>{{$ent->neko_date}}</td>
+				<td>{!! BaseXHelper::tdDate($ent->neko_date) !!}</td>
 				<td>{{ $nekoTypeList[$ent->neko_type] ?? '' }}</td>
-				<td>{{$ent->neko_dt}}</td>
-				<td>{!! BaseXHelper::notationFlg($ent->neko_flg) !!}</td>
+				<td>{!! BaseXHelper::tdDate($ent->neko_dt) !!}</td>
+				<td>{!! BaseXHelper::tdFlg($ent->neko_flg) !!}</td>
 				<td>{{$ent->img_fn}}</td>
-				
-
-				<td>{!! BaseXHelper::foldableNote($ent->note, 'note', 20) !!}</td>
-				
+				<td>{!! BaseXHelper::tdNote($ent->note, 'note', 30) !!}</td>
 				<td>{{$ent->sort_no}}</td>
-				<td>{!! BaseXHelper::notationDeleteFlg($ent->delete_flg) !!}</td>
+				<td>{!! BaseXHelper::tdDeleteFlg($ent->delete_flg) !!}</td>
 				<td>{{$ent->update_user_id}}</td>
 				<td>{{$ent->ip_addr}}</td>
 				<td>{{$ent->created_at}}</td>

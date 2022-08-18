@@ -49,7 +49,22 @@ class BaseXHelper
      * @param int $flg フラグ
      * @return string
      */
-    public static function notationFlg($flg){
+    public static function tdDate($value){
+        
+        if(empty($value)) $value = '';
+        if($value == '0000-00-00') $value = '';
+        if($value == '0000-00-00 00:00') $value = '';
+        if($value == '0000-00-00 00:00:00') $value = '';
+        
+        return $value;
+    }
+    
+    /**
+     * フラグを「有効」、「無効」の形式で表記する
+     * @param int $flg フラグ
+     * @return string
+     */
+    public static function tdFlg($flg){
         $notation = "<span class='text-success'>ON</span>";
         if(!empty($flg)){
             $notation = "<span class='text-secondary'>OFF</span>";
@@ -62,7 +77,7 @@ class BaseXHelper
      * @param int $delete_flg 無効フラグ
      * @return string
      */
-    public static function notationDeleteFlg($delete_flg){
+    public static function tdDeleteFlg($delete_flg){
         $notation = "<span class='text-success'>有効</span>";
         if(!empty($delete_flg)){
             $notation = "<span class='text-secondary'>無効</span>";
@@ -77,7 +92,7 @@ class BaseXHelper
      * @param string $field フィールド名
      * @param int $strLen 表示文字数（バイト）(省略時は無制限に文字表示）
      */
-    public static function foldableNote($v, $field,$str_len = null){
+    public static function tdNote($v, $field,$str_len = null){
         
         $v2="";
         $long_over_flg = 0; // 制限文字数オーバーフラグ

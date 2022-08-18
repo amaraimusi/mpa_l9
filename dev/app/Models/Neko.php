@@ -83,7 +83,7 @@ class Neko extends BaseX
 		
 		// メイン検索
 		if(!empty($searches['main_search'])){
-			$concat = DB::raw("CONCAT( IFNULL(nekos.neko_name, '') ,IFNULL(nekos.tell, '') ,IFNULL(nekos.address, '') ,IFNULL(nekos.note, '') ) ");
+			$concat = DB::raw("CONCAT( IFNULL(nekos.neko_name, '') , IFNULL(nekos.note, '') ) ");
 			$query = $query->where($concat, 'LIKE', "%{$searches['main_search']}%");
 		}
 		
