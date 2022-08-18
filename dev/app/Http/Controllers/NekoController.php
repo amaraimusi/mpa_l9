@@ -111,9 +111,18 @@ class NekoController extends BaseXController{
 		
 		$userInfo = $this->getUserInfo(); // ログインユーザーのユーザー情報を取得する
 		
+		$model = new Neko();
+		
+		// CBBXS-3037
+		$nekoTypeList = $model->getNekoTypeList(); // ネコ種別リスト
+		// CBBXE
+		
 		return view('neko.create', [
 			'userInfo'=>$userInfo,
-			'this_page_version'=>$this->this_page_version,
+		    'this_page_version'=>$this->this_page_version,
+		    // CBBXS-3037B
+		    'nekoTypeList'=>$nekoTypeList,
+		    // CBBXE
 			
 		]);
 		
@@ -225,10 +234,17 @@ class NekoController extends BaseXController{
 	
 		$ent = Neko::find($id);
 		
+		// CBBXS-3038
+		$nekoTypeList = $model->getNekoTypeList(); // ネコ種別リスト
+		// CBBXE
+		
 		return view('neko.edit', [
 			'ent'=>$ent,
 			'userInfo'=>$userInfo,
-			'this_page_version'=>$this->this_page_version,
+		    'this_page_version'=>$this->this_page_version,
+		    // CBBXS-3038B
+		    'nekoTypeList'=>$nekoTypeList,
+		    // CBBXE
 			
 		]);
 		

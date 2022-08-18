@@ -79,7 +79,7 @@ $ver_str = '?v=' . $this_page_version;
 				<label for="neko_type" class="col-12 col-md-5 col-form-label">猫種別</label>
 				<div class="col-12 col-md-7">
 					<select name="neko_type" class="form-control form-control-lg">
-						@foreach ($field_lccList as $neko_type => $neko_type_name)
+						@foreach ($nekoTypeList as $neko_type => $neko_type_name)
 							<option value="{{ $neko_type }}" @selected(old('neko_type', $ent->neko_type) == $neko_type)>
 								{{ $neko_type_name }}
 							</option>
