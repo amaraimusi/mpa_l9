@@ -111,6 +111,13 @@ $ver_str = '?v=' . $this_page_version;
 			</div>
 
 			<!-- CBBXE -->
+
+			<div class="row">
+				<div class="col-12" style="text-align:right">
+					<button id="submit_btn" class="btn btn-warning btn-lg">登録</button>
+					<div id="submit_msg" class="text-success" style="display:none" >データベースに登録中です...</div>
+				</div>
+			</div>
 			
 		</form>
 		

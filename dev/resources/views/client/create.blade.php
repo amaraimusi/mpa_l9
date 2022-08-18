@@ -82,6 +82,7 @@ $ver_str = '?v=' . $this_page_version;
 					<textarea name="note" id="note" class="form-control form-control-lg" placeholder="備考"  maxlength="2000">{{old('note')}}</textarea>
 				</div>
 			</div>
+			<!-- CBBXE -->
 
 			<div class="row">
 				<div class="col-12" style="text-align:right">
@@ -89,7 +90,6 @@ $ver_str = '?v=' . $this_page_version;
 					<div id="submit_msg" class="text-success" style="display:none" >データベースに登録中です...</div>
 				</div>
 			</div>
-			<!-- CBBXE -->
 			
 		</form>
 		
